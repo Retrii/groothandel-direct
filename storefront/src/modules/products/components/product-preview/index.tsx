@@ -30,10 +30,10 @@ export default async function ProductPreview({
     <LocalizedClientLink href={`/products/${product.handle}`} className="group">
       <div
         data-testid="product-wrapper"
-        className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:border-green-200 overflow-hidden h-full relative backdrop-blur-sm"
+        className="flex flex-col bg-white border border-gray-300 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:border-sky-100 overflow-hidden h-full relative backdrop-blur-sm"
       >
         {/* Image Container */}
-        <div className="relative aspect-square bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
+        <div className="relative aspect-square bg-gray-50 overflow-hidden">
           <div className="absolute inset-0 p-3 group-hover:opacity-80 transition-opacity duration-300">
             <Thumbnail
               thumbnail={product.thumbnail}
@@ -49,7 +49,7 @@ export default async function ProductPreview({
               className={clx(
                 "px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm shadow-lg border transition-all duration-300",
                 {
-                  "bg-emerald-500/90 text-white border-emerald-400/50 shadow-emerald-500/25":
+                  "bg-emerald-400/90 text-white border-emerald-300/50 shadow-emerald-400/25":
                     inventoryQuantity && inventoryQuantity > 50,
                   "bg-amber-500/90 text-white border-amber-400/50 shadow-amber-500/25":
                     inventoryQuantity &&
@@ -79,9 +79,9 @@ export default async function ProductPreview({
           {/* Product Info Row */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex w-full items-center justify-between space-x-2">
-              {/* Brand Badge - no background */}
+              {/* Brand Badge - sky blue primary */}
               {product.collection?.title && (
-                <span className="text-emerald-700 text-xs font-semibold">
+                <span className="text-sky-400 text-xs font-semibold">
                   {product.collection?.title}
                 </span>
               )}
@@ -98,7 +98,7 @@ export default async function ProductPreview({
                 <span className="flex items-center">
                   <div
                     className={clx("w-2 h-2 rounded-full mr-1", {
-                      "bg-emerald-500": inventoryQuantity > 50,
+                      "bg-emerald-400": inventoryQuantity > 50,
                       "bg-amber-500": inventoryQuantity <= 50,
                     })}
                   />
@@ -110,7 +110,7 @@ export default async function ProductPreview({
 
           {/* Enhanced Title - smaller text */}
           <h3
-            className="text-gray-900 font-medium text-sm mb-3 line-clamp-2 flex-1 group-hover:text-emerald-700 transition-colors duration-300 leading-relaxed"
+            className="text-gray-900 font-medium text-sm mb-3 line-clamp-2 flex-1 group-hover:text-sky-400 transition-colors duration-300 leading-relaxed"
             data-testid="product-title"
           >
             {product.title}

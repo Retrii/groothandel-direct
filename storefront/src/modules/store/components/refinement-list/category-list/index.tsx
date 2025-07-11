@@ -84,11 +84,11 @@ const CategoryList = ({
             <div className="flex items-center w-full">
               <button
                 onClick={() => toggleCategory(category.id)}
-                className="flex items-center justify-center w-6 h-6 mr-3 hover:bg-emerald-50 rounded-md transition-colors duration-200 group-hover:bg-emerald-50"
+                className="flex items-center justify-center w-6 h-6 mr-3 hover:bg-sky-50 rounded-md transition-colors duration-200 group-hover:bg-sky-50"
               >
                 {isExpanded ? (
                   <svg
-                    className="w-4 h-4 text-emerald-600"
+                    className="w-4 h-4 text-sky-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -102,7 +102,7 @@ const CategoryList = ({
                   </svg>
                 ) : (
                   <svg
-                    className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"
+                    className="w-4 h-4 text-gray-400 group-hover:text-sky-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -122,8 +122,8 @@ const CategoryList = ({
                 }`}
                 className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-emerald-50/50 text-emerald-800 shadow-sm"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-emerald-700"
+                    ? "bg-sky-50/70 text-sky-600 shadow-sm"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-sky-400"
                 }`}
               >
                 <span className="flex items-center">
@@ -132,8 +132,8 @@ const CategoryList = ({
                 <span
                   className={`ml-2 px-2 py-1 text-xs rounded-full font-medium ${
                     isActive
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-200 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700"
+                      ? "bg-sky-100 text-sky-500"
+                      : "bg-gray-200 text-gray-600 group-hover:bg-sky-100 group-hover:text-sky-500"
                   }`}
                 >
                   {category.products?.length || 0}
@@ -147,43 +147,18 @@ const CategoryList = ({
               }`}
               className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-emerald-50/50 text-emerald-800 shadow-sm"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-emerald-700"
+                  ? "bg-sky-50/70 text-sky-600 shadow-sm"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-sky-400"
               }`}
             >
               <div className="flex items-center">
-                <div className="mr-3">
-                  <div
-                    className={`w-4 h-4 rounded flex items-center justify-center ${
-                      isActive
-                        ? "bg-emerald-600 text-white"
-                        : "border-2 border-gray-300 group-hover:border-emerald-400"
-                    }`}
-                  >
-                    {isActive && (
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                </div>
                 <span className="truncate">{category.name}</span>
               </div>
               <span
                 className={`ml-2 px-2 py-1 text-xs rounded-full font-medium ${
                   isActive
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-gray-200 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700"
+                    ? "bg-sky-100 text-sky-500"
+                    : "bg-gray-200 text-gray-600 group-hover:bg-sky-100 group-hover:text-sky-500"
                 }`}
               >
                 {category.products?.length || 0}
@@ -192,7 +167,7 @@ const CategoryList = ({
           )}
         </div>
         {hasChildren && isExpanded && (
-          <ul className="mt-2 space-y-1 border-l-2 border-emerald-100 ml-3">
+          <ul className="mt-2 space-y-1 border-l-2 border-sky-50 ml-3">
             {category.category_children.map((childId) => {
               const childCategory = categories.find(
                 (cat) => cat.id === childId.id
@@ -212,7 +187,7 @@ const CategoryList = ({
         {pathname.includes("/categories") && (
           <LocalizedClientLink
             href="/store"
-            className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200"
+            className="text-sm text-sky-400 hover:text-sky-500 font-medium transition-colors duration-200"
           >
             Wissen
           </LocalizedClientLink>

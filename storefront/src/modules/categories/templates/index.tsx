@@ -87,7 +87,7 @@ export default function CategoryTemplate({
   )
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className=" min-h-screen">
       {/* Breadcrumbs Section */}
       <div className="content-container py-4">
         <CategoryBreadcrumb
@@ -150,7 +150,7 @@ export default function CategoryTemplate({
                 </LocalizedClientLink>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="">
                 <Suspense
                   fallback={
                     <SkeletonProductGrid
@@ -219,7 +219,7 @@ export default function CategoryTemplate({
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 text-center">
+              <div className=" rounded-xl p-6 border border-gray-200 text-center">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Professionele Service & Ondersteuning
                 </h3>
@@ -240,7 +240,7 @@ export default function CategoryTemplate({
       {/* Related Categories - Only if there are subcategories */}
       {currentCategory.category_children &&
         currentCategory.category_children.length > 0 && (
-          <div className="bg-gray-50 border-t border-gray-200">
+          <div className=" border-t border-gray-200">
             <div className="content-container py-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 Subcategorieën

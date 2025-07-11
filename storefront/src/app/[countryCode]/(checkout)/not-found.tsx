@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function NotFound() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-16">
+    <div className="min-h-screen  flex items-center justify-center py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Error Code */}
         <div className="mb-8">

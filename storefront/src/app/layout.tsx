@@ -23,7 +23,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body className="bg-neutral-100">
         <main className="relative">{props.children}</main>
         <Toaster className="z-[99999]" position="bottom-left" />
         <Analytics />

@@ -79,7 +79,7 @@ const CartDrawer = ({
         }}
       >
         <Drawer.Trigger asChild>
-          <button className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:text-green-600 transition-colors duration-200 hover:bg-green-50 rounded-lg">
+          <button className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:text-sky-400 transition-colors duration-200 hover:bg-sky-50 rounded-lg">
             <div className="relative">
               <svg
                 className="h-5 w-5"
@@ -95,7 +95,7 @@ const CartDrawer = ({
                 />
               </svg>
               {totalItems > 0 && (
-                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs px-1.5 py-0.5 rounded-full min-w-4 text-center font-medium">
+                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-4 text-center font-medium">
                   {totalItems}
                 </div>
               )}
@@ -185,7 +185,7 @@ const CartDrawer = ({
                   <div className="mt-6">
                     <LocalizedClientLink
                       href="/store"
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200"
                     >
                       Start winkelen
                     </LocalizedClientLink>
@@ -232,7 +232,7 @@ const CartDrawer = ({
                           isLoading={false}
                         >
                           <Button
-                            className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
+                            className="w-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-white hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200"
                             disabled={isOverSpendingLimit}
                           >
                             Request Approval
@@ -242,7 +242,7 @@ const CartDrawer = ({
                     ) : (
                       <LocalizedClientLink
                         href="/checkout"
-                        className="block w-full text-center px-4 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-200 disabled:opacity-50"
+                        className="block w-full text-center px-4 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 disabled:opacity-50"
                       >
                         Afrekenen
                       </LocalizedClientLink>
@@ -250,7 +250,7 @@ const CartDrawer = ({
                   ) : (
                     <LocalizedClientLink
                       href="/account"
-                      className="block w-full text-center px-4 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
+                      className="block w-full text-center px-4 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200"
                     >
                       Inloggen voor afrekenen
                     </LocalizedClientLink>

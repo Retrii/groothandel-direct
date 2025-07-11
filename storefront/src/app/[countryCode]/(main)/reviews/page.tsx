@@ -87,7 +87,7 @@ const ReviewCard = ({ review }: { review: (typeof mockReviews)[0] }) => {
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
             <span className="text-white font-semibold text-lg">
               {review.customerName.charAt(0)}
             </span>
@@ -133,9 +133,9 @@ export default function ReviewsPage() {
     mockReviews.length
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className=" min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
+      <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <Heading level="h1" className="text-4xl font-bold mb-4">
@@ -169,7 +169,7 @@ export default function ReviewsPage() {
             </Heading>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">Sorteer op:</span>
-              <select className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+              <select className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
                 <option>Nieuwste eerst</option>
                 <option>Hoogste beoordeling</option>
                 <option>Laagste beoordeling</option>
@@ -196,7 +196,7 @@ export default function ReviewsPage() {
             Deel uw ervaring en help andere ondernemers bij het maken van de
             juiste keuze.
           </Text>
-          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 font-medium hover:shadow-lg">
+          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 font-medium hover:shadow-lg">
             <Star className="mr-2 h-5 w-5" />
             Schrijf een review
           </button>

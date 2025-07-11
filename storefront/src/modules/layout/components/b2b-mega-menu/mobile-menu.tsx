@@ -33,7 +33,7 @@ export const MobileB2BMenu = ({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-600 rounded-lg transition-colors duration-200"
+        className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-sky-400 rounded-lg transition-colors duration-200"
       >
         <svg
           className="w-5 h-5 mr-2"

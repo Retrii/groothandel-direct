@@ -71,7 +71,7 @@ export default async function StorePage(props: Params) {
   })
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen">
       {/* Breadcrumbs Section */}
       <div className="content-container py-4">
         <StoreBreadcrumb />
@@ -109,16 +109,16 @@ export default async function StorePage(props: Params) {
 
           {/* Products */}
           <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <Suspense fallback={<SkeletonProductGrid />}>
-                <PaginatedProducts
-                  sortBy={sort}
-                  page={pageNumber}
-                  countryCode={params.countryCode}
-                  customer={customer}
-                />
-              </Suspense>
-            </div>
+            {/* <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"> */}
+            <Suspense fallback={<SkeletonProductGrid />}>
+              <PaginatedProducts
+                sortBy={sort}
+                page={pageNumber}
+                countryCode={params.countryCode}
+                customer={customer}
+              />
+            </Suspense>
+            {/* </div> */}
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ export const B2BMegaMenu = ({
   categories: HttpTypes.StoreProductCategory[]
 }) => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -28,6 +29,13 @@ export const B2BMegaMenu = ({
     )
   }
 
+  // Get sub-subcategories for a given subcategory
+  const getSubSubCategories = (parentId: string) => {
+    return categories.filter(
+      (category) => category.parent_category_id === parentId
+    )
+  }
+
   // Get the actual category object from the activeCategory ID
   const getActiveCategoryObject = () => {
     if (!activeCategory) return null
@@ -36,6 +44,10 @@ export const B2BMegaMenu = ({
 
   // Handle mouse enter for main categories
   const handleCategoryEnter = (categoryId: string) => {
+    // Only open mega menu if category has subcategories
+    const hasSubCategories = getSubCategories(categoryId).length > 0
+    if (!hasSubCategories) return
+
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current)
       closeTimeoutRef.current = null
@@ -87,46 +99,52 @@ export const B2BMegaMenu = ({
     <div className="relative">
       {/* Main Categories */}
       <div className="flex items-center space-x-1">
-        {mainCategories.map((category) => (
-          <div
-            key={category.id}
-            className="relative"
-            onMouseEnter={() => handleCategoryEnter(category.id)}
-            onMouseLeave={handleMenuLeave}
-          >
-            <LocalizedClientLink
-              href={`/categories/${category.handle}`}
-              className={clx(
-                "flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200",
-                activeCategory === category.id
-                  ? "text-green-600 bg-green-50 shadow-sm"
-                  : "text-gray-900 hover:text-green-600 hover:bg-green-50"
-              )}
+        {mainCategories.map((category) => {
+          const hasSubCategories = getSubCategories(category.id).length > 0
+
+          return (
+            <div
+              key={category.id}
+              className="relative"
+              {...(hasSubCategories && {
+                onMouseEnter: () => handleCategoryEnter(category.id),
+                onMouseLeave: handleMenuLeave,
+              })}
             >
-              <span>{category.name}</span>
-              {getSubCategories(category.id).length > 0 && (
-                <svg
-                  className={clx(
-                    "ml-2 h-4 w-4 transition-all duration-200",
-                    activeCategory === category.id
-                      ? "rotate-180 text-green-600"
-                      : "text-gray-400"
-                  )}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              )}
-            </LocalizedClientLink>
-          </div>
-        ))}
+              <LocalizedClientLink
+                href={`/categories/${category.handle}`}
+                className={clx(
+                  "flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200",
+                  activeCategory === category.id
+                    ? "text-sky-400 bg-sky-50 shadow-sm"
+                    : "text-gray-900 hover:text-sky-400 hover:bg-sky-50"
+                )}
+              >
+                <span>{category.name}</span>
+                {hasSubCategories && (
+                  <svg
+                    className={clx(
+                      "ml-2 h-4 w-4 transition-all duration-200",
+                      activeCategory === category.id
+                        ? "rotate-180 text-sky-400"
+                        : "text-gray-400"
+                    )}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                )}
+              </LocalizedClientLink>
+            </div>
+          )
+        })}
       </div>
 
       {/* Mega Menu */}
@@ -148,29 +166,28 @@ export const B2BMegaMenu = ({
           >
             {/* Container to keep content centered */}
             <div className="content-container">
-              <div className="flex min-h-[320px]">
-                {/* Clean Sidebar */}
-                <div className="w-72 bg-gray-50 rounded-l-lg">
-                  <div className="p-6">
-                    {/* Category Header */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="bg-white min-h-[400px]">
+                {/* Header with Category Info */}
+                <div className="my-6 bg-gradient-to-r from-sky-50 to-sky-100 border border-sky-200 rounded-xl px-8 py-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
                         {getActiveCategoryObject()?.name}
                       </h3>
-                      <p className="text-sm text-gray-600">
-                        Ontdek onze uitgebreide collectie
+                      <p className="text-sm text-gray-600 leading-relaxed max-w-md">
+                        {getActiveCategoryObject()?.description ||
+                          "Ontdek onze uitgebreide collectie van hoogwaardige producten"}
                       </p>
                     </div>
 
-                    {/* View All Button */}
+                    {/* CTA Button */}
                     <LocalizedClientLink
                       href={`/categories/${getActiveCategoryObject()?.handle}`}
-                      className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 font-medium mb-6 hover:shadow-md"
+                      className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 font-semibold hover:shadow-lg hover:scale-105 text-sm"
                     >
-                      Bekijk alle{" "}
-                      {getActiveCategoryObject()?.name?.toLowerCase()}
+                      <span>Bekijk alle producten</span>
                       <svg
-                        className="ml-2 w-4 h-4"
+                        className="ml-3 w-5 h-5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -179,76 +196,62 @@ export const B2BMegaMenu = ({
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M9 5l7 7-7 7"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
                         />
                       </svg>
                     </LocalizedClientLink>
-
-                    {/* Quick Actions */}
-                    <div className="space-y-3">
-                      <LocalizedClientLink
-                        href="/contact"
-                        className="flex items-center text-sm text-gray-600 hover:text-green-600 transition-colors duration-200"
-                      >
-                        <svg
-                          className="w-4 h-4 mr-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          />
-                        </svg>
-                        Contact opnemen
-                      </LocalizedClientLink>
-                      <LocalizedClientLink
-                        href="/bulk-korting"
-                        className="flex items-center text-sm text-gray-600 hover:text-green-600 transition-colors duration-200"
-                      >
-                        <svg
-                          className="w-4 h-4 mr-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                          />
-                        </svg>
-                        Bulk korting
-                      </LocalizedClientLink>
-                    </div>
                   </div>
                 </div>
 
-                {/* Main Content Grid */}
-                <div className="flex-1 p-6">
-                  <div className="grid grid-cols-3 gap-8 h-full">
-                    {getSubCategories(activeCategory)
-                      ?.slice(0, 9)
-                      .map((child) => (
-                        <div key={child.id} className="group">
+                {/* Subcategories Grid */}
+                <div className="px-8 py-4">
+                  <div className="grid grid-cols-4 gap-8">
+                    {getSubCategories(activeCategory)?.map((subcategory) => {
+                      const subSubCategories = getSubSubCategories(
+                        subcategory.id
+                      )
+
+                      return (
+                        <div key={subcategory.id} className="space-y-4">
+                          {/* Subcategory Header */}
                           <LocalizedClientLink
-                            href={`/categories/${child.handle}`}
-                            className="block space-y-2"
+                            href={`/categories/${subcategory.handle}`}
+                            className="block group"
                           >
-                            <h4 className="font-medium text-gray-900 group-hover:text-green-600 transition-colors duration-200">
-                              {child.name}
+                            <h4 className="font-bold text-gray-900 group-hover:text-sky-400 transition-colors duration-200 text-base mb-2">
+                              {subcategory.name}
                             </h4>
-                            <p className="text-sm text-gray-600 line-clamp-2">
-                              {child.description ||
-                                "Ontdek onze selectie van hoogwaardige producten"}
-                            </p>
+                            <div className="w-8 h-0.5 bg-sky-400 group-hover:w-12 transition-all duration-200"></div>
                           </LocalizedClientLink>
+
+                          {/* Sub-subcategories List */}
+                          {subSubCategories.length > 0 && (
+                            <div className="space-y-2 mt-4">
+                              {subSubCategories
+                                .slice(0, 8)
+                                .map((subSubCategory) => (
+                                  <LocalizedClientLink
+                                    key={subSubCategory.id}
+                                    href={`/categories/${subSubCategory.handle}`}
+                                    className="block text-sm text-gray-600 hover:text-sky-400 hover:translate-x-1 transition-all duration-200"
+                                  >
+                                    {subSubCategory.name}
+                                  </LocalizedClientLink>
+                                ))}
+                              {subSubCategories.length > 8 && (
+                                <LocalizedClientLink
+                                  href={`/categories/${subcategory.handle}`}
+                                  className="block text-xs text-sky-500 hover:text-sky-600 font-medium mt-3"
+                                >
+                                  +{subSubCategories.length - 8} meer
+                                  categorieën
+                                </LocalizedClientLink>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      ))}
+                      )
+                    })}
                   </div>
                 </div>
               </div>

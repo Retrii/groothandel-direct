@@ -6,7 +6,7 @@ export default async function PreviewPrice({ price }: { price: VariantPrice }) {
     return null
   }
 
-  // If it's a sale, show "Markt waarde" with original price crossed out and our price in green
+  // If it's a sale, show "Markt waarde" with original price crossed out and our price in sky blue
   if (price.price_type === "sale") {
     return (
       <div className="flex flex-col space-y-2">
@@ -20,11 +20,11 @@ export default async function PreviewPrice({ price }: { price: VariantPrice }) {
 
         {/* Our Price Row */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-emerald-700 font-semibold">
+          <span className="text-sm text-sky-400 font-semibold">
             Onze prijs:
           </span>
           <Text
-            className="text-emerald-600 font-bold text-xl"
+            className="text-sky-400 font-bold text-xl"
             data-testid="our-price"
           >
             {price.calculated_price}
@@ -37,11 +37,8 @@ export default async function PreviewPrice({ price }: { price: VariantPrice }) {
   // Regular price display (no sale)
   return (
     <div className="flex items-center justify-between">
-      <span className="text-sm text-emerald-700 font-semibold">Prijs:</span>
-      <Text
-        className="text-emerald-600 font-bold text-base"
-        data-testid="price"
-      >
+      <span className="text-sm text-sky-400 font-semibold">Prijs:</span>
+      <Text className="text-sky-400 font-bold text-base" data-testid="price">
         {price.calculated_price}
       </Text>
     </div>
