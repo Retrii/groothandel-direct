@@ -27,7 +27,7 @@ export const RequestQuotePrompt = ({
             <li>
               <Dialog.Close asChild>
                 <LocalizedClientLink
-                  className="text-blue-500 cursor-pointer"
+                  className="text-green-500 cursor-pointer"
                   href="/account"
                 >
                   Log in
@@ -36,7 +36,7 @@ export const RequestQuotePrompt = ({
               {" or "}
               <Dialog.Close>
                 <LocalizedClientLink
-                  className="text-blue-500 cursor-pointer"
+                  className="text-green-500 cursor-pointer"
                   href="/account"
                 >
                   create an account

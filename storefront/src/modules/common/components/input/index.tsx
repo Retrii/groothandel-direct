@@ -1,19 +1,20 @@
-import { clx, Label } from "@medusajs/ui"
-import React, { useEffect, useImperativeHandle, useState } from "react"
+import { Eye } from "@medusajs/icons"
+import { Label } from "@medusajs/ui"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 
-import Eye from "@/modules/common/icons/eye"
-import EyeOff from "@/modules/common/icons/eye-off"
+import { clx } from "@medusajs/ui"
 
-type InputProps = Omit<
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
-  "placeholder"
-> & {
+export interface InputProps
+  extends Omit<
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+    "placeholder"
+  > {
   label: string
   errors?: Record<string, unknown>
   touched?: Record<string, unknown>
   name: string
   topLabel?: string
-  colSpan?: 1 | 2
+  colSpan?: number
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -31,7 +32,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputRef = React.useRef<HTMLInputElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
 
@@ -48,7 +49,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     useImperativeHandle(ref, () => inputRef.current!)
 
     return (
-      <div className={`flex flex-col w-full`}>
+      <div className={clx("w-full", `col-span-${colSpan}`)}>
         {topLabel && (
           <Label className="mb-2 txt-compact-medium-plus">{topLabel}</Label>
         )}
@@ -59,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             placeholder=" "
             required={required}
             className={clx(
-              "pt-4 pb-1 block w-full h-9 px-4 mt-0 bg-ui-bg-field rounded-full appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active shadow-borders-base hover:bg-ui-bg-field-hover",
+              "pt-4 pb-1 block w-full h-11 px-4 mt-0 bg-gray-50 appearance-none focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500 transition-all duration-200 rounded-lg",
               className
             )}
             {...props}
@@ -79,7 +80,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword(!showPassword)}
               className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-2"
             >
-              {showPassword ? <Eye /> : <EyeOff />}
+              {showPassword ? <Eye /> : <Eye />}
             </button>
           )}
         </div>

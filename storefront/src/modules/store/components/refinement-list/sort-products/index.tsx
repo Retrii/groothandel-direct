@@ -13,15 +13,15 @@ type SortProductsProps = {
 const sortOptions = [
   {
     value: "created_at",
-    label: "Latest Arrivals",
+    label: "Nieuwste producten",
   },
   {
     value: "price_asc",
-    label: "Price: Low -> High",
+    label: "Prijs: laag naar hoog",
   },
   {
     value: "price_desc",
-    label: "Price: High -> Low",
+    label: "Prijs: hoog naar laag",
   },
 ]
 
@@ -35,12 +35,12 @@ const SortProducts = ({
   }
 
   return (
-    <div className="flex items-center gap-2 text-sm p-2 justify-between">
-      <span className="text-neutral-500">Sort by:</span>
+    <div className="mb-6">
+      <h3 className="text-sm font-medium text-gray-900 mb-3">Sorteren</h3>
       <div className="relative">
         <select
-          className="w-full pr-8 overflow-hidden focus:outline-none appearance-none"
-          title="Sort by"
+          className="w-full p-3 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 appearance-none cursor-pointer"
+          title="Sorteren op"
           value={sortBy}
           onChange={(e) => handleChange(e.target.value as SortOptions)}
           data-testid={dataTestId}
@@ -51,8 +51,8 @@ const SortProducts = ({
             </option>
           ))}
         </select>
-        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <ChevronUpDown className="w-4 h-4 text-neutral-500" />
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <ChevronUpDown className="w-4 h-4 text-gray-400" />
         </div>
       </div>
     </div>

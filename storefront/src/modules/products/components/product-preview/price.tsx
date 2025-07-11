@@ -1,31 +1,49 @@
 import { VariantPrice } from "@/lib/util/get-product-price"
-import { Text, clx } from "@medusajs/ui"
+import { Text } from "@medusajs/ui"
 
-// TODO: Price needs to access price list type
 export default async function PreviewPrice({ price }: { price: VariantPrice }) {
   if (!price) {
     return null
   }
 
-  return (
-    <>
-      {price.price_type === "sale" && (
-        <Text
-          className="line-through text-ui-fg-muted"
-          data-testid="original-price"
-        >
-          {price.original_price}
-        </Text>
-      )}
+  // If it's a sale, show "Markt waarde" with original price crossed out and our price in green
+  if (price.price_type === "sale") {
+    return (
+      <div className="flex flex-col space-y-2">
+        {/* Market Value Row */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-gray-500">Marktprijs:</span>
+          <span className="text-xs text-gray-500 line-through font-medium">
+            {price.original_price}
+          </span>
+        </div>
 
+        {/* Our Price Row */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-emerald-700 font-semibold">
+            Onze prijs:
+          </span>
+          <Text
+            className="text-emerald-600 font-bold text-xl"
+            data-testid="our-price"
+          >
+            {price.calculated_price}
+          </Text>
+        </div>
+      </div>
+    )
+  }
+
+  // Regular price display (no sale)
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-emerald-700 font-semibold">Prijs:</span>
       <Text
-        className={clx("text-neutral-950 font-medium text-lg", {
-          "text-ui-fg-interactive": price.price_type === "sale",
-        })}
+        className="text-emerald-600 font-bold text-base"
         data-testid="price"
       >
         {price.calculated_price}
       </Text>
-    </>
+    </div>
   )
 }

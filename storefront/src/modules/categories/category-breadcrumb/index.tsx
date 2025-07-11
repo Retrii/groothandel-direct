@@ -5,19 +5,23 @@ import type { JSX } from "react"
 const CategoryBreadcrumbItem = ({
   title,
   handle,
+  isLast = false,
 }: {
   title: string
   handle?: string
+  isLast?: boolean
 }) => {
+  if (isLast) {
+    return <span className="text-gray-900 font-medium">{title}</span>
+  }
+
   return (
-    <li className="text-neutral-500" key={handle}>
-      <LocalizedClientLink
-        className="hover:text-neutral-900"
-        href={handle ? `/categories/${handle}` : "/store"}
-      >
-        {title}
-      </LocalizedClientLink>
-    </li>
+    <LocalizedClientLink
+      className="text-gray-600 hover:text-green-600 transition-colors duration-200"
+      href={handle ? `/categories/${handle}` : "/store"}
+    >
+      {title}
+    </LocalizedClientLink>
   )
 }
 
@@ -34,12 +38,15 @@ const CategoryBreadcrumb = ({
     let currentCategory: HttpTypes.StoreProductCategory | null = category
     const breadcrumbs: JSX.Element[] = []
 
+    // Add current category as last item
     breadcrumbs.unshift(
-      <CategoryBreadcrumbItem
-        title={currentCategory.name}
-        handle={currentCategory.handle}
-        key={currentCategory.id}
-      />
+      <li key={currentCategory.id}>
+        <CategoryBreadcrumbItem
+          title={currentCategory.name}
+          handle={currentCategory.handle}
+          isLast={true}
+        />
+      </li>
     )
 
     currentCategory =
@@ -47,21 +54,31 @@ const CategoryBreadcrumb = ({
       null
 
     while (currentCategory) {
+      // Add separator
       breadcrumbs.unshift(
-        <li
-          className="text-neutral-500"
-          key={`separator-parent-${currentCategory.id}`}
-        >
-          {">"}
+        <li key={`separator-parent-${currentCategory.id}`}>
+          <svg
+            className="w-4 h-4 text-gray-400 mx-2"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
         </li>
       )
 
+      // Add parent category
       breadcrumbs.unshift(
-        <CategoryBreadcrumbItem
-          title={currentCategory.name}
-          handle={currentCategory.handle}
-          key={currentCategory.id}
-        />
+        <li key={currentCategory.id}>
+          <CategoryBreadcrumbItem
+            title={currentCategory.name}
+            handle={currentCategory.handle}
+          />
+        </li>
       )
 
       currentCategory =
@@ -69,14 +86,28 @@ const CategoryBreadcrumb = ({
         null
     }
 
+    // Add separator before all products
     breadcrumbs.unshift(
-      <li className="text-neutral-500" key={`separator-parent-base`}>
-        {">"}
+      <li key="separator-parent-base">
+        <svg
+          className="w-4 h-4 text-gray-400 mx-2"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fillRule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clipRule="evenodd"
+          />
+        </svg>
       </li>
     )
 
+    // Add "All Products" as base
     breadcrumbs.unshift(
-      <CategoryBreadcrumbItem title="Products" key={`base`} />
+      <li key="base">
+        <CategoryBreadcrumbItem title="Alle Producten" />
+      </li>
     )
 
     return breadcrumbs
@@ -84,7 +115,43 @@ const CategoryBreadcrumb = ({
 
   const breadcrumbs = generateBreadcrumbs(category)
 
-  return <ul className="flex items-center gap-x-3 text-sm">{breadcrumbs}</ul>
+  return (
+    <nav className="bg-white rounded-lg border border-gray-200 px-4 py-3 shadow-sm">
+      <ol className="flex items-center space-x-2 text-sm">
+        <li>
+          <div className="flex items-center">
+            <svg
+              className="w-4 h-4 mr-2 text-gray-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            <LocalizedClientLink
+              href="/"
+              className="text-gray-600 hover:text-green-600 transition-colors duration-200"
+            >
+              Home
+            </LocalizedClientLink>
+          </div>
+        </li>
+        <li>
+          <svg
+            className="w-4 h-4 text-gray-400 mx-2"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </li>
+        {breadcrumbs}
+      </ol>
+    </nav>
+  )
 }
 
 export default CategoryBreadcrumb

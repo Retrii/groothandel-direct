@@ -1,11 +1,12 @@
 "use client"
 
+import { formatAmount } from "@/modules/common/components/amount-cell"
+import LocalizedClientLink from "@/modules/common/components/localized-client-link"
+import { B2BCart } from "@/types/global"
+import { StoreFreeShippingPrice } from "@/types/shipping-option/http"
 import { CheckCircleSolid, XMark } from "@medusajs/icons"
 import { StoreCart, StorePrice } from "@medusajs/types"
 import { Button, clx } from "@medusajs/ui"
-import { formatAmount } from "@/modules/common/components/amount-cell"
-import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import { StoreFreeShippingPrice } from "@/types/shipping-option/http"
 import { useState } from "react"
 
 export default function FreeShippingPriceNudge({
@@ -14,7 +15,7 @@ export default function FreeShippingPriceNudge({
   freeShippingPrices,
 }: {
   variant?: "popup" | "inline"
-  cart: StoreCart
+  cart: StoreCart | B2BCart
   freeShippingPrices: StoreFreeShippingPrice[]
 }) {
   if (!cart || !freeShippingPrices?.length) {
@@ -40,7 +41,7 @@ function FreeShippingInline({
   cart,
   price,
 }: {
-  cart: StoreCart
+  cart: StoreCart | B2BCart
   price: StorePrice & {
     target_reached: boolean
     target_remaining: number
@@ -95,7 +96,7 @@ function FreeShippingPopup({
   cart,
   price,
 }: {
-  cart: StoreCart
+  cart: StoreCart | B2BCart
   price: StorePrice & {
     target_reached: boolean
     target_remaining: number

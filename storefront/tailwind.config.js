@@ -24,7 +24,7 @@ module.exports = {
         "2xlarge": "1920px",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)"],
+        sans: ["Lato", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "sans-serif"],
       },
       keyframes: {
         "accordion-open": {

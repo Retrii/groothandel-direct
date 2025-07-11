@@ -1,4 +1,5 @@
 import { clx, Button as MedusaButton } from "@medusajs/ui"
+
 type ButtonProps = React.ComponentProps<typeof MedusaButton>
 
 const Button = ({
@@ -9,17 +10,21 @@ const Button = ({
   const variant = props.variant ?? "primary"
 
   const className = clx(classNameProp, {
-    "!shadow-borders-base !border-none":
+    "bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-900 hover:shadow-sm":
       variant === "secondary" || props.disabled,
-    "!shadow-none bg-neutral-900 text-white":
+    "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white hover:shadow-lg":
       variant === "primary" && !props.disabled,
-    "!shadow-none bg-transparent text-neutral-900": variant === "transparent",
+    "bg-transparent text-neutral-900 hover:bg-gray-50":
+      variant === "transparent",
   })
-  console.log(className)
+
   return (
     <MedusaButton
-      className={`!rounded-full text-sm font-normal ${className}`}
+      className={`text-sm font-medium transition-all duration-200 rounded-lg ${className}`}
       variant={variant}
+      style={{
+        border: "none",
+      }}
       {...props}
     >
       {children}

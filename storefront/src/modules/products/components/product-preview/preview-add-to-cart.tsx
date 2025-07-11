@@ -1,9 +1,9 @@
 "use client"
 
 import { addToCartEventBus } from "@/lib/data/cart-event-bus"
+import ShoppingBag from "@/modules/common/icons/shopping-bag"
 import { StoreProduct, StoreRegion } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
-import ShoppingBag from "@/modules/common/icons/shopping-bag"
 import { useState } from "react"
 
 const PreviewAddToCart = ({
@@ -37,7 +37,7 @@ const PreviewAddToCart = ({
   }
   return (
     <Button
-      className="rounded-full p-3 border-none shadow-none"
+      className="rounded-full p-3 border-none shadow-none bg-emerald-600 hover:bg-emerald-700"
       onClick={(e) => {
         e.preventDefault()
         handleAddToCart()

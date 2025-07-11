@@ -3,11 +3,9 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 
-import SortProducts, { SortOptions } from "./sort-products"
-import { Container } from "@medusajs/ui"
-import SearchInResults from "./search-in-results"
 import { HttpTypes } from "@medusajs/types"
 import CategoryList from "./category-list"
+import SortProducts, { SortOptions } from "./sort-products"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -44,15 +42,15 @@ const RefinementList = ({
   }
 
   return (
-    <div className="flex flex-col divide-neutral-200 small:w-1/5 w-full gap-3">
-      <Container className="flex flex-col divide-y divide-neutral-200 p-0 w-full">
-        <SearchInResults listName={listName} />
-        <SortProducts
-          sortBy={sortBy}
-          setQueryParams={setQueryParams}
-          data-testid={dataTestId}
-        />
-      </Container>
+    <div className="space-y-6">
+      {/* Sort */}
+      <SortProducts
+        sortBy={sortBy}
+        setQueryParams={setQueryParams}
+        data-testid={dataTestId}
+      />
+
+      {/* Categories */}
       {categories && (
         <CategoryList
           categories={categories}

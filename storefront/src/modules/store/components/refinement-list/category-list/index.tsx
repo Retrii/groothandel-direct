@@ -1,9 +1,5 @@
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import Radio from "@/modules/common/components/radio"
-import SquareMinus from "@/modules/common/icons/square-minus"
-import SquarePlus from "@/modules/common/icons/square-plus"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Text } from "@medusajs/ui"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
@@ -70,7 +66,7 @@ const CategoryList = ({
           (cat) => cat.id === currentCategory.parent_category_id
         ) as HttpTypes.StoreProductCategory
       }
-      return level * 4
+      return level * 20
     },
     [categories]
   )
@@ -79,26 +75,69 @@ const CategoryList = ({
     const hasChildren = category.category_children.length > 0
     const isExpanded = expandedCategories.includes(category.id)
     const paddingLeft = getCategoryMarginLeft(category)
+    const isActive = isCurrentCategory(category.handle)
 
     return (
-      <li key={category.id}>
-        <div className={`flex items-center gap-2 mb-2 pl-${paddingLeft}`}>
+      <li key={category.id} className="mb-1">
+        <div className="flex items-center group" style={{ paddingLeft }}>
           {hasChildren ? (
-            <div className="flex items-center gap-2 hover:text-neutral-700">
-              <button onClick={() => toggleCategory(category.id)}>
+            <div className="flex items-center w-full">
+              <button
+                onClick={() => toggleCategory(category.id)}
+                className="flex items-center justify-center w-6 h-6 mr-3 hover:bg-emerald-50 rounded-md transition-colors duration-200 group-hover:bg-emerald-50"
+              >
                 {isExpanded ? (
-                  <SquareMinus className="h-3 mx-1" />
+                  <svg
+                    className="w-4 h-4 text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 ) : (
-                  <SquarePlus className="h-3 mx-1" />
+                  <svg
+                    className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 )}
               </button>
               <LocalizedClientLink
                 href={`/categories/${category.handle}${
                   searchParams.size ? `?${searchParams.toString()}` : ""
                 }`}
-                className="flex gap-2 items-center hover:text-neutral-700"
+                className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-emerald-50/50 text-emerald-800 shadow-sm"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-emerald-700"
+                }`}
               >
-                {category.name} ({category.products?.length})
+                <span className="flex items-center">
+                  <span className="truncate">{category.name}</span>
+                </span>
+                <span
+                  className={`ml-2 px-2 py-1 text-xs rounded-full font-medium ${
+                    isActive
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-gray-200 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700"
+                  }`}
+                >
+                  {category.products?.length || 0}
+                </span>
               </LocalizedClientLink>
             </div>
           ) : (
@@ -106,15 +145,54 @@ const CategoryList = ({
               href={`/categories/${category.handle}${
                 searchParams.size ? `?${searchParams.toString()}` : ""
               }`}
-              className="flex gap-2 items-center hover:text-neutral-700 text-start hover:cursor-pointer"
+              className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                isActive
+                  ? "bg-emerald-50/50 text-emerald-800 shadow-sm"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-emerald-700"
+              }`}
             >
-              <Radio checked={isCurrentCategory(category.handle)} />
-              {category.name} ({category.products?.length})
+              <div className="flex items-center">
+                <div className="mr-3">
+                  <div
+                    className={`w-4 h-4 rounded flex items-center justify-center ${
+                      isActive
+                        ? "bg-emerald-600 text-white"
+                        : "border-2 border-gray-300 group-hover:border-emerald-400"
+                    }`}
+                  >
+                    {isActive && (
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="truncate">{category.name}</span>
+              </div>
+              <span
+                className={`ml-2 px-2 py-1 text-xs rounded-full font-medium ${
+                  isActive
+                    ? "bg-emerald-100 text-emerald-700"
+                    : "bg-gray-200 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700"
+                }`}
+              >
+                {category.products?.length || 0}
+              </span>
             </LocalizedClientLink>
           )}
         </div>
         {hasChildren && isExpanded && (
-          <ul>
+          <ul className="mt-2 space-y-1 border-l-2 border-emerald-100 ml-3">
             {category.category_children.map((childId) => {
               const childCategory = categories.find(
                 (cat) => cat.id === childId.id
@@ -128,24 +206,24 @@ const CategoryList = ({
   }
 
   return (
-    <Container className="flex flex-col p-0 divide-y divide-neutral-200">
-      <div className="flex justify-between items-center p-3">
-        <Text className="text-sm font-medium">Categories</Text>
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-medium text-gray-900">Categorieën</h3>
         {pathname.includes("/categories") && (
           <LocalizedClientLink
             href="/store"
-            className="text-xs text-neutral-500 hover:text-neutral-700"
+            className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200"
           >
-            Clear
+            Wissen
           </LocalizedClientLink>
         )}
       </div>
-      <ul className="flex flex-col gap-3 text-sm p-3 text-neutral-500">
+      <ul className="space-y-1">
         {categories
           .filter((cat) => cat.parent_category_id === null)
           .map(renderCategory)}
       </ul>
-    </Container>
+    </div>
   )
 }
 

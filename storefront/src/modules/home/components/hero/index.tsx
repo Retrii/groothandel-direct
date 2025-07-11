@@ -1,13 +1,13 @@
 "use client"
 
+import Button from "@/modules/common/components/button"
 import { Github } from "@medusajs/icons"
 import { Heading } from "@medusajs/ui"
-import Button from "@/modules/common/components/button"
 import Image from "next/image"
 
 const Hero = () => {
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-neutral-100">
+    <div className="h-[75vh] w-full relative bg-neutral-100 rounded-xl overflow-hidden">
       <Image
         src="/hero-image.jpg"
         alt="Hero background"
@@ -36,7 +36,7 @@ const Hero = () => {
           href="https://github.com/medusajs/b2b-starter-medusa"
           target="_blank"
         >
-          <Button variant="secondary" className="rounded-2xl">
+          <Button variant="secondary" className="shadow-lg">
             <Github />
             Github Repository
           </Button>
