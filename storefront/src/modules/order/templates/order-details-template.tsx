@@ -1,15 +1,13 @@
-import { ArrowUturnLeft } from "@medusajs/icons"
 import React from "react"
 
-import { HttpTypes } from "@medusajs/types"
-import { Container } from "@medusajs/ui"
-import Button from "@/modules/common/components/button"
-import LocalizedClientLink from "@/modules/common/components/localized-client-link"
+import Breadcrumb from "@/modules/common/components/breadcrumb"
+import PageHeader from "@/modules/common/components/page-header"
+import BillingDetails from "@/modules/order/components/billing-details"
 import Item from "@/modules/order/components/item"
 import OrderDetails from "@/modules/order/components/order-details"
 import OrderSummary from "@/modules/order/components/order-summary"
 import ShippingDetails from "@/modules/order/components/shipping-details"
-import BillingDetails from "@/modules/order/components/billing-details"
+import { HttpTypes } from "@medusajs/types"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
@@ -18,49 +16,59 @@ type OrderDetailsTemplateProps = {
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
 }) => {
+  const breadcrumbItems = [
+    { label: "Account", href: "/account" },
+    { label: "Bestellingen", href: "/account/orders" },
+    { label: `Order #${order.display_id}`, href: "#" },
+  ]
+
   return (
-    <div className="flex flex-col justify-center gap-y-2">
-      <div className="flex gap-2 justify-between items-center mb-2">
-        <LocalizedClientLink
-          href="/account/orders"
-          className="flex gap-2 items-center text-ui-fg-subtle hover:text-ui-fg-base"
-          data-testid="back-to-overview-button"
-        >
-          <Button variant="secondary">
-            <ArrowUturnLeft /> Back
-          </Button>
-        </LocalizedClientLink>
-      </div>
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        title={`Order #${order.display_id}`}
+        description="Bekijk de details van je bestelling"
+      />
 
-      <div className="small:grid small:grid-cols-6 gap-4 flex flex-col-reverse">
-        <div className="small:col-span-4 flex flex-col gap-y-2">
-          {order.items?.map((item) => {
-            return (
-              <Container key={item.id}>
-                <Item item={item} order={order} />
-              </Container>
-            )
-          })}
+      <Breadcrumb items={breadcrumbItems} />
 
-          <Container>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3 flex flex-col gap-4">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                Producten
+              </h2>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {order.items?.map((item) => (
+                  <Item key={item.id} item={item} order={order} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
             <OrderSummary order={order} />
-          </Container>
+          </div>
         </div>
 
-        <div className="small:col-span-2 flex flex-col gap-y-2">
-          <Container>
+        <div className="lg:col-span-1 flex flex-col gap-4">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
             <OrderDetails order={order} />
-          </Container>
+          </div>
 
           {(!!order.shipping_address || !!order.shipping_methods?.length) && (
-            <Container>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
               <ShippingDetails order={order} />
-            </Container>
+            </div>
           )}
+
           {!!order.billing_address && (
-            <Container>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
               <BillingDetails order={order} />
-            </Container>
+            </div>
           )}
         </div>
       </div>

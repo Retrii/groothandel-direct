@@ -1,7 +1,7 @@
 import { updateLineItem } from "@/lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Input, clx } from "@medusajs/ui"
-import { useState, useRef, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const AddNoteButton = ({
   item,
@@ -57,7 +57,7 @@ const AddNoteButton = ({
           onClick={() => setIsOpen(true)}
           disabled={disabled}
         >
-          Add note
+          Notitie toevoegen
         </button>
       )}
       {note?.length > 0 && (
@@ -67,7 +67,7 @@ const AddNoteButton = ({
             isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
           )}
         >
-          <span className="text-neutral-950">Note:&nbsp;</span>
+          <span className="text-neutral-950">Notitie:&nbsp;</span>
           <span
             className="text-neutral-600 italic cursor-pointer hover:text-neutral-950 hover:underline"
             onClick={() => setIsOpen(true)}
@@ -89,7 +89,7 @@ const AddNoteButton = ({
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <span className="text-neutral-950">Note:&nbsp;</span>
+        <span className="text-neutral-950">Notitie:&nbsp;</span>
 
         <Input
           ref={inputRef}

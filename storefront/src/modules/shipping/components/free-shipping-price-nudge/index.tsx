@@ -80,7 +80,7 @@ function FreeShippingInline({
             className={clx(
               "bg-gradient-to-r from-gray-400 to-gray-500 h-1 rounded-full max-w-full duration-500 ease-in-out",
               {
-                "from-emerald-400 to-emerald-500": price.target_reached,
+                "from-green-400 to-green-500": price.target_reached,
               }
             )}
             style={{ width: `${price.remaining_percentage}%` }}
@@ -161,7 +161,7 @@ function FreeShippingPopup({
                 className={clx(
                   "bg-gradient-to-r from-gray-400 to-gray-500 h-1.5 rounded-full max-w-full duration-500 ease-in-out",
                   {
-                    "from-emerald-400 to-emerald-500": price.target_reached,
+                    "from-green-400 to-green-500": price.target_reached,
                   }
                 )}
                 style={{ width: `${price.remaining_percentage}%` }}

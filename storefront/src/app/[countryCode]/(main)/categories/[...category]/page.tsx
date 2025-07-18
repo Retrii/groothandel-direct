@@ -1,5 +1,10 @@
 import { getCategoryByHandle, listCategories } from "@/lib/data/categories"
+import {
+  getAllProductsForFilterOptions,
+  getFilteredProductsForCounts,
+} from "@/lib/data/products"
 import { listRegions } from "@/lib/data/regions"
+import { parseFiltersFromSearchParams } from "@/lib/util/filter-products"
 import CategoryTemplate from "@/modules/categories/templates"
 import { SortOptions } from "@/modules/store/components/refinement-list/sort-products"
 import { Metadata } from "next"
@@ -151,27 +156,47 @@ export async function generateStaticParams() {
 }
 
 export default async function CategoryPage(props: Props) {
-  const searchParams = await props.searchParams
   const params = await props.params
+  const searchParams = await props.searchParams
   const { sortBy, page } = searchParams
 
   const categories = await listCategories()
-
-  const currentCategory = categories.find(
-    (category) => category.handle === params.category.join("/")
+  const category = await getCategoryByHandle(params.category).then(
+    (category) => category
   )
 
-  if (!currentCategory) {
+  if (!category) {
     notFound()
   }
+
+  // Parse current filters from search params
+  const currentFilters = searchParams
+    ? parseFiltersFromSearchParams(new URLSearchParams(searchParams))
+    : undefined
+
+  // Fetch all products for filter options (all products in this category + subcategories)
+  const filterProducts = await getAllProductsForFilterOptions({
+    countryCode: params.countryCode,
+    categoryId: category.id,
+  })
+
+  // Fetch filtered products for accurate counts
+  const filteredProducts = await getFilteredProductsForCounts({
+    countryCode: params.countryCode,
+    categoryId: category.id,
+    filters: currentFilters,
+  })
 
   return (
     <CategoryTemplate
       categories={categories}
-      currentCategory={currentCategory}
-      sortBy={sortBy}
+      currentCategory={category}
       page={page}
+      sortBy={sortBy}
       countryCode={params.countryCode}
+      searchParams={new URLSearchParams(searchParams)}
+      products={filterProducts}
+      filteredProducts={filteredProducts}
     />
   )
 }

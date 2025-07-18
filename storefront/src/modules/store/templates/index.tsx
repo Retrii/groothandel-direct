@@ -35,6 +35,7 @@ const StoreTemplate = ({
                 sortBy={sort}
                 page={pageNumber}
                 countryCode={countryCode}
+                currentPath="/store"
               />
             </Suspense>
           </div>

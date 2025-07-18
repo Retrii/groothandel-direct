@@ -43,21 +43,6 @@ const initialFormData: FormData = {
   currency_code: "",
 }
 
-const placeholder = ({
-  placeholder,
-  required,
-}: {
-  placeholder: string
-  required: boolean
-}) => {
-  return (
-    <span className="text-ui-fg-muted">
-      {placeholder}
-      {required && <span className="text-ui-fg-error">*</span>}
-    </span>
-  )
-}
-
 const Register = ({ setCurrentView, regions }: Props) => {
   const [message, formAction] = useActionState(signup, null)
   const [termsAccepted, setTermsAccepted] = useState(false)
@@ -102,194 +87,209 @@ const Register = ({ setCurrentView, regions }: Props) => {
   const currencies = regions.map((region) => region.currency_code)
 
   return (
-    <div
-      className="max-w-sm flex flex-col items-start gap-2 my-8"
-      data-testid="register-page"
-    >
-      <Text className="text-4xl text-neutral-950 text-left mb-4">
-        Create your
-        <br />
-        company account.
-      </Text>
-      <form className="w-full flex flex-col" action={formAction}>
-        <div className="flex flex-col w-full gap-y-4">
+    <div className="w-full" data-testid="register-page">
+      <form className="space-y-6" action={formAction}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            label="Email"
+            label="E-mailadres"
             name="email"
             required
             type="email"
             autoComplete="email"
             data-testid="email-input"
-            className="bg-white"
+            className="w-full"
             value={formData.email}
             onChange={handleChange}
           />
           <Input
-            label="First name"
-            name="first_name"
-            required
-            autoComplete="given-name"
-            data-testid="first-name-input"
-            className="bg-white"
-            value={formData.first_name}
-            onChange={handleChange}
-          />
-          <Input
-            label="Last name"
-            name="last_name"
-            required
-            autoComplete="family-name"
-            data-testid="last-name-input"
-            className="bg-white"
-            value={formData.last_name}
-            onChange={handleChange}
-          />
-          <Input
-            label="Company name"
-            name="company_name"
-            required
-            autoComplete="organization"
-            data-testid="company-name-input"
-            className="bg-white"
-            value={formData.company_name}
-            onChange={handleChange}
-          />
-          <Input
-            label="Password"
+            label="Wachtwoord"
             name="password"
             required
             type="password"
             autoComplete="new-password"
             data-testid="password-input"
-            className="bg-white"
+            className="w-full"
             value={formData.password}
             onChange={handleChange}
           />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            label="Company address"
+            label="Voornaam"
+            name="first_name"
+            required
+            autoComplete="given-name"
+            data-testid="first-name-input"
+            className="w-full"
+            value={formData.first_name}
+            onChange={handleChange}
+          />
+          <Input
+            label="Achternaam"
+            name="last_name"
+            required
+            autoComplete="family-name"
+            data-testid="last-name-input"
+            className="w-full"
+            value={formData.last_name}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium text-gray-900">
+            Bedrijfsinformatie
+          </h3>
+
+          <Input
+            label="Bedrijfsnaam"
+            name="company_name"
+            required
+            autoComplete="organization"
+            data-testid="company-name-input"
+            className="w-full"
+            value={formData.company_name}
+            onChange={handleChange}
+          />
+
+          <Input
+            label="Adres"
             name="company_address"
             required
             autoComplete="address"
             data-testid="company-address-input"
-            className="bg-white"
+            className="w-full"
             value={formData.company_address}
             onChange={handleChange}
           />
-          <Input
-            label="Company city"
-            name="company_city"
-            required
-            autoComplete="city"
-            data-testid="company-city-input"
-            className="bg-white"
-            value={formData.company_city}
-            onChange={handleChange}
-          />
-          <Input
-            label="Company state"
-            name="company_state"
-            autoComplete="state"
-            data-testid="company-state-input"
-            className="bg-white"
-            value={formData.company_state}
-            onChange={handleChange}
-          />
-          <Input
-            label="Company zip"
-            name="company_zip"
-            required
-            autoComplete="postal-code"
-            data-testid="company-zip-input"
-            className="bg-white"
-            value={formData.company_zip}
-            onChange={handleChange}
-          />
-          <Select
-            name="company_country"
-            required
-            autoComplete="country"
-            data-testid="company-country-input"
-            value={formData.company_country}
-            onValueChange={handleSelectChange("company_country")}
-          >
-            <Select.Trigger className="rounded-full h-10 px-4">
-              <Select.Value
-                placeholder={placeholder({
-                  placeholder: "Select a country",
-                  required: true,
-                })}
-              />
-            </Select.Trigger>
-            <Select.Content>
-              {countryNames?.map((country) => (
-                <Select.Item key={country} value={country}>
-                  {country}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-          <Select
-            name="currency_code"
-            required
-            autoComplete="currency"
-            data-testid="company-currency-input"
-            value={formData.currency_code}
-            onValueChange={handleSelectChange("currency_code")}
-          >
-            <Select.Trigger className="rounded-full h-10 px-4">
-              <Select.Value
-                placeholder={placeholder({
-                  placeholder: "Select a currency",
-                  required: true,
-                })}
-              />
-            </Select.Trigger>
-            <Select.Content>
-              {[...new Set(currencies)].map((currency) => (
-                <Select.Item key={currency} value={currency}>
-                  {currency.toUpperCase()} ({currencySymbolMap[currency]})
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Input
+              label="Stad"
+              name="company_city"
+              required
+              autoComplete="city"
+              data-testid="company-city-input"
+              className="w-full"
+              value={formData.company_city}
+              onChange={handleChange}
+            />
+            <Input
+              label="Provincie (optioneel)"
+              name="company_state"
+              autoComplete="state"
+              data-testid="company-state-input"
+              className="w-full"
+              value={formData.company_state}
+              onChange={handleChange}
+            />
+            <Input
+              label="Postcode"
+              name="company_zip"
+              required
+              autoComplete="postal-code"
+              data-testid="company-zip-input"
+              className="w-full"
+              value={formData.company_zip}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                Land *
+              </Label>
+              <Select
+                name="company_country"
+                required
+                autoComplete="country"
+                data-testid="company-country-input"
+                value={formData.company_country}
+                onValueChange={handleSelectChange("company_country")}
+              >
+                <Select.Trigger className="w-full h-10 px-3 border border-gray-300 rounded-lg">
+                  <Select.Value placeholder="Selecteer een land" />
+                </Select.Trigger>
+                <Select.Content>
+                  {countryNames?.map((country) => (
+                    <Select.Item key={country} value={country}>
+                      {country}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                Valuta *
+              </Label>
+              <Select
+                name="currency_code"
+                required
+                autoComplete="currency"
+                data-testid="company-currency-input"
+                value={formData.currency_code}
+                onValueChange={handleSelectChange("currency_code")}
+              >
+                <Select.Trigger className="w-full h-10 px-3 border border-gray-300 rounded-lg">
+                  <Select.Value placeholder="Selecteer een valuta" />
+                </Select.Trigger>
+                <Select.Content>
+                  {[...new Set(currencies)].map((currency) => (
+                    <Select.Item key={currency} value={currency}>
+                      {currency.toUpperCase()} ({currencySymbolMap[currency]})
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+            </div>
+          </div>
         </div>
-        <div className="border-b border-neutral-200 my-6" />
+
         <ErrorMessage error={message} data-testid="register-error" />
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-start space-x-3">
           <Checkbox
             name="terms"
             id="terms-checkbox"
             data-testid="terms-checkbox"
             checked={termsAccepted}
             onCheckedChange={(checked) => setTermsAccepted(!!checked)}
-          ></Checkbox>
+            className="mt-1"
+          />
           <Label
-            id="terms-label"
-            className="flex items-center text-ui-fg-base !text-xs hover:cursor-pointer !transform-none"
+            className="text-sm text-gray-700 leading-relaxed cursor-pointer"
             htmlFor="terms-checkbox"
             data-testid="terms-label"
           >
-            I agree to the terms and conditions.
+            Ik ga akkoord met de algemene voorwaarden en het privacybeleid.
           </Label>
         </div>
+
         <SubmitButton
-          className="w-full mt-6"
+          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-2.5 rounded-lg"
           data-testid="register-button"
           disabled={!isValid}
         >
-          Register
+          Account aanmaken
         </SubmitButton>
+
+        <div className="text-center">
+          <Text className="text-sm text-gray-600">
+            Heeft u al een account?{" "}
+            <button
+              type="button"
+              onClick={() => setCurrentView(LOGIN_VIEW.LOG_IN)}
+              className="font-medium text-green-600 hover:text-green-500"
+            >
+              Inloggen
+            </button>
+          </Text>
+        </div>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
-        Already a member?{" "}
-        <button
-          onClick={() => setCurrentView(LOGIN_VIEW.LOG_IN)}
-          className="underline"
-        >
-          Log in
-        </button>
-        .
-      </span>
     </div>
   )
 }

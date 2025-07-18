@@ -41,6 +41,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "groothandel-direct.ams3.digitaloceanspaces.com",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
     ],
   },
 }

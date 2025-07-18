@@ -14,7 +14,7 @@ export default async function NotFound() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Error Code */}
         <div className="mb-8">
-          <h1 className="text-7xl font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
+          <h1 className="text-7xl font-bold text-transparent bg-gradient-to-r from-green-600 to-green-600 bg-clip-text">
             404
           </h1>
         </div>
@@ -34,7 +34,7 @@ export default async function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <LocalizedClientLink
             href="/cart"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 font-medium hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-600 text-white rounded-lg hover:from-green-700 hover:to-green-700 transition-all duration-200 font-medium hover:shadow-lg"
           >
             <svg
               className="mr-2 h-5 w-5"

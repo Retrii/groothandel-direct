@@ -52,7 +52,10 @@ const ItemsTemplate = ({
       {showTotal && (
         <Container>
           <div className="flex items-start justify-between h-full self-stretch">
-            <Text>Total: {totalQuantity} items</Text>
+            <Text>
+              Totaal: {totalQuantity}{" "}
+              {totalQuantity === 1 ? "artikel" : "artikelen"}
+            </Text>
             <Text>
               {convertToLocale({
                 amount: cart?.item_total,

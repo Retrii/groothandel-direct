@@ -1,9 +1,9 @@
 import { addToCartEventBus } from "@/lib/data/cart-event-bus"
 import { getProductPrice } from "@/lib/util/get-product-price"
-import { HttpTypes, StoreProduct, StoreProductVariant } from "@medusajs/types"
-import { clx, Table } from "@medusajs/ui"
 import Button from "@/modules/common/components/button"
 import ShoppingBag from "@/modules/common/icons/shopping-bag"
+import { HttpTypes, StoreProduct, StoreProductVariant } from "@medusajs/types"
+import { clx, Table } from "@medusajs/ui"
 import { useState } from "react"
 import BulkTableQuantity from "../bulk-table-quantity"
 
@@ -133,22 +133,29 @@ const ProductVariantsTable = ({
             })}
           </Table.Body>
         </Table>
+        {lineItemsMap.size > 0 && (
+          <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
+            <p className="text-sm font-medium text-green-800">
+              Totaal aantal geselecteerd: {totalQuantity} stuks
+            </p>
+          </div>
+        )}
       </div>
       <Button
         onClick={handleAddToCart}
         variant="primary"
-        className="w-full h-10"
+        className="w-full h-12 text-base font-semibold bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600"
         isLoading={isAdding}
         disabled={totalQuantity === 0}
         data-testid="add-product-button"
       >
         <ShoppingBag
-          className="text-white"
+          className="text-white mr-2"
           fill={totalQuantity === 0 ? "none" : "#fff"}
         />
         {totalQuantity === 0
-          ? "Choose product variant(s) above"
-          : "Add to cart"}
+          ? "Selecteer minimaal 1 product"
+          : `Voeg ${totalQuantity} stuks toe aan winkelwagen`}
       </Button>
     </div>
   )

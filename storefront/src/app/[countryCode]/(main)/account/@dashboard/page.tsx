@@ -7,7 +7,7 @@ import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Account",
-  description: "Overview of your account activity.",
+  description: "Overzicht van uw accountactiviteit.",
 }
 
 export default async function OverviewTemplate() {

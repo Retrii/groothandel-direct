@@ -74,7 +74,7 @@ export default function Footer() {
                   placeholder="uw@bedrijfsemail.nl"
                   className="flex-1 px-4 py-3 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-200 rounded-lg transition-all duration-200"
                 />
-                <button className="px-6 py-3 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 font-medium rounded-lg">
+                <button className="px-6 py-3 bg-gradient-to-r from-green-400 to-green-500 text-white hover:from-green-500 hover:to-green-600 transition-all duration-200 font-medium rounded-lg">
                   Aanmelden
                 </button>
               </div>
@@ -121,7 +121,7 @@ export default function Footer() {
                   </span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-emerald-300" />
+                  <CheckCircle className="h-4 w-4 text-green-300" />
                   <span className="text-sky-50">
                     4.8/5 sterren (2400+ reviews)
                   </span>
@@ -276,7 +276,8 @@ export default function Footer() {
               <LanguageSelector />
             </div>
             <div className="text-sm text-sky-100">
-              © 2024 Groothandel Direct. Alle rechten voorbehouden.
+              © {new Date().getFullYear()} Groothandel Direct. Alle rechten
+              voorbehouden.
             </div>
           </div>
         </div>

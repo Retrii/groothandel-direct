@@ -30,16 +30,24 @@ export const listCollections = async (
   queryParams.limit = queryParams.limit || "100"
   queryParams.offset = queryParams.offset || "0"
 
+  // Always include metadata in the response
+  if (!queryParams.fields) {
+    queryParams.fields = "*,metadata,products"
+  }
+
   return sdk.client
     .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>(
       "/store/collections",
       {
         query: queryParams,
         next,
-        cache: "force-cache",
+        cache: "no-cache",
       }
     )
-    .then(({ collections }) => ({ collections, count: collections.length }))
+    .then(({ collections, count }) => ({
+      collections,
+      count: count || collections.length,
+    }))
 }
 
 export const getCollectionByHandle = async (
@@ -51,9 +59,35 @@ export const getCollectionByHandle = async (
 
   return sdk.client
     .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
-      query: { handle },
+      query: {
+        handle,
+        fields: "*,metadata,products",
+      },
       next,
-      cache: "force-cache",
+      cache: "no-cache",
     })
     .then(({ collections }) => collections[0])
+}
+
+export const getCollectionProducts = async (
+  collectionId: string,
+  queryParams: Record<string, string> = {}
+): Promise<{ products: HttpTypes.StoreProduct[]; count: number }> => {
+  const next = {
+    ...(await getCacheOptions("products")),
+  }
+
+  queryParams.limit = queryParams.limit || "50"
+  queryParams.offset = queryParams.offset || "0"
+
+  return sdk.client
+    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
+      `/store/collections/${collectionId}/products`,
+      {
+        query: queryParams,
+        next,
+        cache: "no-cache",
+      }
+    )
+    .then((response) => response)
 }

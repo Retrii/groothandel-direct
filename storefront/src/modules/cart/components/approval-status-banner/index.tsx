@@ -16,7 +16,9 @@ const ApprovalStatusBanner = ({ cart }: { cart: B2BCart }) => {
       {cartApprovalStatus === ApprovalStatusType.PENDING && (
         <>
           <LockClosedSolid className="w-4 h-4" />
-          <Text className="text-left">This cart is locked for approval.</Text>
+          <Text className="text-left">
+            Deze winkelwagen is vergrendeld voor goedkeuring.
+          </Text>
         </>
       )}
 
@@ -24,12 +26,13 @@ const ApprovalStatusBanner = ({ cart }: { cart: B2BCart }) => {
         <>
           <XMarkMini className="w-4 h-4" />
           <Text className="text-left">
-            This cart has been rejected. You can re-request approval from the{" "}
+            Deze winkelwagen is afgewezen. U kunt opnieuw goedkeuring aanvragen
+            via de{" "}
             <LocalizedClientLink
               href="/checkout"
               className="text-ui-bg-interactive hover:text-ui-fg-interactive-hover"
             >
-              checkout page
+              afrekenpagina
             </LocalizedClientLink>
             .
           </Text>
@@ -40,7 +43,7 @@ const ApprovalStatusBanner = ({ cart }: { cart: B2BCart }) => {
         <>
           <CheckMini className="w-4 h-4" />
           <Text className="text-left">
-            This cart has been approved and can now be completed.
+            Deze winkelwagen is goedgekeurd en kan nu worden afgerond.
           </Text>
         </>
       )}

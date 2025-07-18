@@ -1,6 +1,11 @@
 import { listCategories } from "@/lib/data/categories"
 import { retrieveCustomer } from "@/lib/data/customer"
-import { listProducts } from "@/lib/data/products"
+import {
+  getAllProductsForFilterOptions,
+  getFilteredProductsForCounts,
+  listProducts,
+} from "@/lib/data/products"
+import { parseFiltersFromSearchParams } from "@/lib/util/filter-products"
 import SkeletonProductGrid from "@/modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@/modules/store/components/refinement-list"
 import { SortOptions } from "@/modules/store/components/refinement-list/sort-products"
@@ -70,6 +75,22 @@ export default async function StorePage(props: Params) {
     queryParams: { limit: 1 },
   })
 
+  // Parse current filters from search params
+  const currentFilters = searchParams
+    ? parseFiltersFromSearchParams(new URLSearchParams(searchParams))
+    : undefined
+
+  // Fetch all products for filter options (all products in store)
+  const filterProducts = await getAllProductsForFilterOptions({
+    countryCode: params.countryCode,
+  })
+
+  // Fetch filtered products for accurate counts
+  const filteredProducts = await getFilteredProductsForCounts({
+    countryCode: params.countryCode,
+    filters: currentFilters,
+  })
+
   return (
     <div className="min-h-screen">
       {/* Breadcrumbs Section */}
@@ -77,48 +98,67 @@ export default async function StorePage(props: Params) {
         <StoreBreadcrumb />
       </div>
 
-      {/* Header Section */}
-      <div className="">
-        <div className="content-container py-4">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Alle Producten
-            </h1>
-            <p className="text-lg text-gray-600 mb-4">
-              Ontdek meer dan 30.000 professionele artikelen voor uw bedrijf
-            </p>
-            <div className="flex items-center text-sm text-gray-600">
-              <span>{totalProductCount.toLocaleString()} producten</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <div className="content-container py-6">
+      <div className="content-container pt-0 sm:pt-6 pb-24 lg:pb-6">
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Filter Sidebar */}
-          <div className="lg:w-80 flex-shrink-0">
+          {/* Filter Sidebar - Hidden on Mobile */}
+          <div className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
                 Filters
               </h2>
-              <RefinementList sortBy={sort} categories={categories} />
+              <RefinementList
+                sortBy={sort}
+                categories={categories}
+                countryCode={params.countryCode}
+                products={filterProducts}
+                filteredProducts={filteredProducts}
+              />
             </div>
           </div>
 
-          {/* Products */}
+          {/* Products Section */}
           <div className="flex-1">
-            {/* <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"> */}
+            {/* Header */}
+            <div className="mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+                    Alle Producten
+                  </h1>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                    Ontdek meer dan 30.000 professionele artikelen voor uw
+                    bedrijf
+                  </p>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-500">
+                  {filteredProducts.length.toLocaleString()} producten
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Filters */}
+            <div className="lg:hidden">
+              <RefinementList
+                sortBy={sort}
+                categories={categories}
+                countryCode={params.countryCode}
+                products={filterProducts}
+                filteredProducts={filteredProducts}
+              />
+            </div>
+
+            {/* Products Grid */}
             <Suspense fallback={<SkeletonProductGrid />}>
               <PaginatedProducts
                 sortBy={sort}
                 page={pageNumber}
                 countryCode={params.countryCode}
                 customer={customer}
+                searchParams={new URLSearchParams(searchParams)}
+                currentPath="/store"
               />
             </Suspense>
-            {/* </div> */}
           </div>
         </div>
       </div>

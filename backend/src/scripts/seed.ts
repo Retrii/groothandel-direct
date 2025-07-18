@@ -310,18 +310,51 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   logger.info("Seeding product data...");
 
-  const {
-    result: [collection],
-  } = await createCollectionsWorkflow(container).run({
+  const { result: collectionResult } = await createCollectionsWorkflow(
+    container
+  ).run({
     input: {
       collections: [
         {
           title: "Featured",
           handle: "featured",
+          metadata: {
+            description: "Onze uitgelichte producten van top kwaliteit",
+            logo: "https://placehold.co/200x200/22c55e/ffffff?text=Featured",
+          },
+        },
+        {
+          title: "CleanPro",
+          handle: "cleanpro",
+          metadata: {
+            description:
+              "CleanPro is een toonaangevende fabrikant van professionele schoonmaakproducten. Al meer dan 30 jaar leveren wij hoogwaardige oplossingen voor de professionele schoonmaaksector.",
+            logo: "https://placehold.co/200x200/0ea5e9/ffffff?text=CleanPro",
+          },
+        },
+        {
+          title: "HygieneMax",
+          handle: "hygienemax",
+          metadata: {
+            description:
+              "HygieneMax staat voor maximale hygiëne in elke omgeving. Onze producten voldoen aan de hoogste normen en zijn ideaal voor zorginstellingen, horeca en industrie.",
+            logo: "https://placehold.co/200x200/8b5cf6/ffffff?text=HygieneMax",
+          },
+        },
+        {
+          title: "EcoClean",
+          handle: "ecoclean",
+          metadata: {
+            description:
+              "EcoClean biedt duurzame schoonmaakoplossingen zonder concessies aan kwaliteit. Al onze producten zijn biologisch afbreekbaar en veilig voor mens en milieu.",
+            logo: "https://placehold.co/200x200/10b981/ffffff?text=EcoClean",
+          },
         },
       ],
     },
   });
+
+  const collection = collectionResult.find((c) => c.handle === "featured")!;
 
   const { result: categoryResult } = await createProductCategoriesWorkflow(
     container
@@ -437,61 +470,75 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       products: [
         {
-          title: "1080p HD Pro Webcam | Superior Video | Privacy enabled",
+          title: "Professionele Allesreiniger 5L",
+          collection_id: collectionResult.find((c) => c.handle === "cleanpro")
+            ?.id,
           category_ids: [
             categoryResult.find((cat) => cat.name === "Accessories")?.id!,
           ],
           description:
-            "High-quality 1080p HD webcam that elevates your work environment with superior video and audio that outperforms standard laptop cameras. Achieve top-tier video collaboration at a cost-effective price point, ideal for widespread deployment across your organization.",
-          weight: 400,
+            "Krachtige allesreiniger voor dagelijks gebruik op alle waterbestendige oppervlakken. Deze geconcentreerde formule verwijdert effectief vuil, vet en vlekken zonder strepen achter te laten. Geschikt voor vloeren, wanden, werkbladen en sanitair. pH-neutraal en veilig voor alle materialen.",
+          weight: 5200,
           status: ProductStatus.PUBLISHED,
+          metadata: {
+            usage_instructions:
+              "Verdun 1:50 met water voor normaal gebruik, 1:20 voor zwaar vervuilde oppervlakken.",
+            dosage: "20-50ml per 10 liter water",
+            storage: "Bewaar op een koele, droge plaats. Bescherm tegen vorst.",
+            safety_information:
+              "Draag handschoenen bij langdurig gebruik. Bij contact met ogen direct spoelen met water.",
+            certificates: "ISO 9001, HACCP, Ecolabel",
+            material: "Niet-ionische oppervlakte-actieve stoffen",
+            ph_value: "7.0",
+            msds_link: "https://example.com/msds/allesreiniger.pdf",
+          },
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/camera-front.png",
+              url: "https://placehold.co/600x600/e5e7eb/1f2937?text=Allesreiniger+5L",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/camera-side.png",
+              url: "https://placehold.co/600x600/d1d5db/1f2937?text=Product+Label",
             },
           ],
           options: [
             {
-              title: "Color",
-              values: ["Black", "White"],
+              title: "Inhoud",
+              values: ["5L", "10L"],
             },
           ],
           variants: [
             {
-              title: "Webcam Black",
-              sku: "WEBCAM-BLACK",
+              title: "Allesreiniger 5L",
+              sku: "CLEAN-PRO-5L",
               options: {
-                Color: "Black",
+                Inhoud: "5L",
               },
-              manage_inventory: false,
+              manage_inventory: true,
               prices: [
                 {
-                  amount: 59,
+                  amount: 1250,
                   currency_code: "eur",
                 },
                 {
-                  amount: 59,
+                  amount: 1250,
                   currency_code: "usd",
                 },
               ],
             },
             {
-              title: "Webcam White",
-              sku: "WEBCAM-WHITE",
+              title: "Allesreiniger 10L",
+              sku: "CLEAN-PRO-10L",
               options: {
-                Color: "White",
+                Inhoud: "10L",
               },
-              manage_inventory: false,
+              manage_inventory: true,
               prices: [
                 {
-                  amount: 65,
+                  amount: 2200,
                   currency_code: "eur",
                 },
                 {
-                  amount: 65,
+                  amount: 2200,
                   currency_code: "usd",
                 },
               ],

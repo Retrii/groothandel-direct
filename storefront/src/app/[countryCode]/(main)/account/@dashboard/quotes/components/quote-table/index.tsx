@@ -76,13 +76,13 @@ export const QuoteTableItem = ({
                 color="blue"
                 className="mr-1"
               >
-                New
+                Nieuw
               </Badge>
             )}
 
             {isItemRemoved ? (
               <Badge size="2xsmall" rounded="full" color="red" className="mr-1">
-                Removed
+                Verwijderd
               </Badge>
             ) : (
               isItemUpdated && (
@@ -92,7 +92,7 @@ export const QuoteTableItem = ({
                   color="orange"
                   className="mr-1"
                 >
-                  Modified
+                  Aangepast
                 </Badge>
               )
             )}

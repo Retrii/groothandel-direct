@@ -3,6 +3,25 @@ import { HttpTypes } from "@medusajs/types"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
+// Helper function to count all products including subcategories
+const countAllProducts = (
+  category: HttpTypes.StoreProductCategory,
+  categories: HttpTypes.StoreProductCategory[]
+): number => {
+  let totalCount = category.products?.length || 0
+
+  if (category.category_children && category.category_children.length > 0) {
+    category.category_children.forEach((child) => {
+      const childCategory = categories.find((cat) => cat.id === child.id)
+      if (childCategory) {
+        totalCount += countAllProducts(childCategory, categories)
+      }
+    })
+  }
+
+  return totalCount
+}
+
 const CategoryList = ({
   categories,
   currentCategory,
@@ -66,7 +85,7 @@ const CategoryList = ({
           (cat) => cat.id === currentCategory.parent_category_id
         ) as HttpTypes.StoreProductCategory
       }
-      return level * 20
+      return level * 2
     },
     [categories]
   )
@@ -82,51 +101,55 @@ const CategoryList = ({
         <div className="flex items-center group" style={{ paddingLeft }}>
           {hasChildren ? (
             <div className="flex items-center w-full">
-              <button
-                onClick={() => toggleCategory(category.id)}
-                className="flex items-center justify-center w-6 h-6 mr-3 hover:bg-sky-50 rounded-md transition-colors duration-200 group-hover:bg-sky-50"
-              >
-                {isExpanded ? (
-                  <svg
-                    className="w-4 h-4 text-sky-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-4 h-4 text-gray-400 group-hover:text-sky-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                )}
-              </button>
               <LocalizedClientLink
                 href={`/categories/${category.handle}${
                   searchParams.size ? `?${searchParams.toString()}` : ""
                 }`}
-                className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center justify-between w-full py-2 pl-1 pr-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-sky-50/70 text-sky-600 shadow-sm"
+                    ? "bg-sky-50/70 text-sky-400 shadow-sm"
                     : "text-gray-700 hover:bg-gray-50 hover:text-sky-400"
                 }`}
               >
                 <span className="flex items-center">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      toggleCategory(category.id)
+                    }}
+                    className="flex items-center justify-center w-7 h-7 mr-1 hover:bg-sky-100 rounded transition-colors duration-200"
+                  >
+                    {isExpanded ? (
+                      <svg
+                        className="w-4 h-4 text-sky-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-4 h-4 text-gray-400 group-hover:text-sky-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    )}
+                  </button>
                   <span className="truncate">{category.name}</span>
                 </span>
                 <span
@@ -136,7 +159,7 @@ const CategoryList = ({
                       : "bg-gray-200 text-gray-600 group-hover:bg-sky-100 group-hover:text-sky-500"
                   }`}
                 >
-                  {category.products?.length || 0}
+                  {countAllProducts(category, categories)}
                 </span>
               </LocalizedClientLink>
             </div>
@@ -147,7 +170,7 @@ const CategoryList = ({
               }`}
               className={`flex items-center justify-between w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-sky-50/70 text-sky-600 shadow-sm"
+                  ? "bg-sky-50/70 text-sky-400 shadow-sm"
                   : "text-gray-700 hover:bg-gray-50 hover:text-sky-400"
               }`}
             >
@@ -161,7 +184,7 @@ const CategoryList = ({
                     : "bg-gray-200 text-gray-600 group-hover:bg-sky-100 group-hover:text-sky-500"
                 }`}
               >
-                {category.products?.length || 0}
+                {countAllProducts(category, categories)}
               </span>
             </LocalizedClientLink>
           )}
@@ -187,7 +210,7 @@ const CategoryList = ({
         {pathname.includes("/categories") && (
           <LocalizedClientLink
             href="/store"
-            className="text-sm text-sky-400 hover:text-sky-500 font-medium transition-colors duration-200"
+            className="text-sm text-green-600 hover:text-sky-400 font-medium transition-colors duration-200"
           >
             Wissen
           </LocalizedClientLink>

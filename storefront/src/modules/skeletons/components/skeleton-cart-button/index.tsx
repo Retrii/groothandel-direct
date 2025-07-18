@@ -15,7 +15,7 @@ export default function SkeletonCartButton() {
             d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5.4M7 13v6a2 2 0 002 2h6a2 2 0 002-2v-6m-8 0V9a2 2 0 012-2h4a2 2 0 012 2v4"
           />
         </svg>
-        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-4 text-center font-medium">
+        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-400 to-green-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-4 text-center font-medium">
           0
         </div>
       </div>

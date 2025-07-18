@@ -2,7 +2,6 @@ import { login } from "@/lib/data/customer"
 import { LOGIN_VIEW } from "@/modules/account/templates/login-template"
 import ErrorMessage from "@/modules/checkout/components/error-message"
 import { SubmitButton } from "@/modules/checkout/components/submit-button"
-import Button from "@/modules/common/components/button"
 import Input from "@/modules/common/components/input"
 import { Checkbox, Text } from "@medusajs/ui"
 import { useActionState } from "react"
@@ -15,55 +14,64 @@ const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useActionState(login, null)
 
   return (
-    <div
-      className="max-w-sm w-full h-full flex flex-col justify-center gap-6 my-auto"
-      data-testid="login-page"
-    >
-      <Text className="text-4xl text-neutral-950 text-left">
-        Log in for faster
-        <br />
-        checkout.
-      </Text>
-      <form className="w-full" action={formAction}>
-        <div className="flex flex-col w-full gap-y-2">
+    <div className="w-full" data-testid="login-page">
+      <form className="space-y-6" action={formAction}>
+        <div className="space-y-4">
           <Input
-            label="Email"
+            label="E-mailadres"
             name="email"
             type="email"
-            title="Enter a valid email address."
+            title="Voer een geldig e-mailadres in."
             autoComplete="email"
             required
             data-testid="email-input"
+            className="w-full"
           />
           <Input
-            label="Password"
+            label="Wachtwoord"
             name="password"
             type="password"
             autoComplete="current-password"
             required
             data-testid="password-input"
+            className="w-full"
           />
-          <div className="flex flex-col gap-2 w-full border-b border-neutral-200 my-6" />
-          <div className="flex items-center gap-2">
-            <Checkbox name="remember_me" data-testid="remember-me-checkbox" />
-            <Text className="text-neutral-950 text-base-regular">
-              Remember me
+        </div>
+
+        <div className="flex items-center">
+          <Checkbox
+            name="remember_me"
+            data-testid="remember-me-checkbox"
+            id="remember-me"
+          />
+          <label htmlFor="remember-me" className="ml-2 text-sm text-gray-700">
+            Onthoud mij
+          </label>
+        </div>
+
+        <ErrorMessage error={message} data-testid="login-error-message" />
+
+        <div className="space-y-3">
+          <SubmitButton
+            data-testid="sign-in-button"
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-2.5 rounded-lg"
+          >
+            Inloggen
+          </SubmitButton>
+
+          <div className="text-center">
+            <Text className="text-sm text-gray-600">
+              Nog geen account?{" "}
+              <button
+                type="button"
+                onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
+                className="font-medium text-green-600 hover:text-green-500"
+                data-testid="register-button"
+              >
+                Registreren
+              </button>
             </Text>
           </div>
-        </div>
-        <ErrorMessage error={message} data-testid="login-error-message" />
-        <div className="flex flex-col gap-2">
-          <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
-            Log in
-          </SubmitButton>
-          <Button
-            variant="secondary"
-            onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-            className="w-full h-10"
-            data-testid="register-button"
-          >
-            Register
-          </Button>
         </div>
       </form>
     </div>

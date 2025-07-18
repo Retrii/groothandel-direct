@@ -6,64 +6,65 @@ type ShippingDetailsProps = {
 }
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
-  // order.shipping_address = {
-  //   first_name: "Riqwan",
-  //   last_name: "Thamir",
-  //   address_1: "11c heidestrasse",
-  //   address_2: "Berlin - 10557",
-  //   country_code: "DE",
-  //   postal_code: "10557",
-  //   city: "Berlin",
-  //   company: "MedusaJS Aps",
-  // }
-  // order.billing_address = {
-  //   first_name: "Riqwan",
-  //   last_name: "Thamir",
-  //   address_1: "11c heidestrasse",
-  //   address_2: "Berlin - 10557",
-  //   country_code: "DE",
-  //   postal_code: "10557",
-  //   city: "Berlin",
-  // }
-  // order.shipping_methods = [
-  //   {
-  //     name: "Webshiper",
-  //     total: 1055,
-  //   },
-  // ]
-  return (
-    !!order.shipping_address && (
-      <>
-        <Heading level="h3" className="mb-2">
-          Delivery Address
-        </Heading>
+  if (!order.shipping_address) {
+    return null
+  }
 
-        {!!order.shipping_address && (
-          <div>
-            <Text className="txt-medium text-ui-fg-subtle capitalize">
-              {order.shipping_address?.company}
-            </Text>
-            <Text className="txt-medium text-ui-fg-subtle capitalize">
-              {order.shipping_address?.first_name}{" "}
-              {order.shipping_address?.last_name}
-            </Text>
-            <Text className="txt-medium text-ui-fg-subtle capitalize">
-              {order.shipping_address?.phone}
-            </Text>
-            <Text className="txt-medium text-ui-fg-subtle">
-              {order.shipping_address?.address_1}{" "}
-              {order.shipping_address?.address_2}
-            </Text>
-            <Text className="txt-medium text-ui-fg-subtle">
-              {order.shipping_address?.postal_code},{" "}
-              {order.shipping_address?.city},{" "}
-              {order.shipping_address?.province},{" "}
-              {order.shipping_address?.country_code?.toUpperCase()}
-            </Text>
-          </div>
+  return (
+    <div className="p-6">
+      <Heading level="h3" className="mb-4 flex items-center gap-2">
+        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+        Verzendadres
+      </Heading>
+
+      <div className="space-y-2 text-sm">
+        {order.shipping_address?.company && (
+          <Text className="font-medium text-gray-900 capitalize">
+            {order.shipping_address.company}
+          </Text>
         )}
-      </>
-    )
+
+        <Text className="text-gray-600 capitalize">
+          {order.shipping_address?.first_name}{" "}
+          {order.shipping_address?.last_name}
+        </Text>
+
+        {order.shipping_address?.phone && (
+          <Text className="text-gray-600">{order.shipping_address.phone}</Text>
+        )}
+
+        <Text className="text-gray-600">
+          {order.shipping_address?.address_1}
+          {order.shipping_address?.address_2 && (
+            <span>, {order.shipping_address.address_2}</span>
+          )}
+        </Text>
+
+        <Text className="text-gray-600">
+          {order.shipping_address?.postal_code} {order.shipping_address?.city}
+          {order.shipping_address?.province && (
+            <span>, {order.shipping_address.province}</span>
+          )}
+        </Text>
+
+        <Text className="text-gray-600 font-medium">
+          {order.shipping_address?.country_code?.toUpperCase()}
+        </Text>
+      </div>
+
+      {order.shipping_methods && order.shipping_methods.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <Text className="text-sm font-medium text-gray-900 mb-2">
+            Verzendmethode
+          </Text>
+          {order.shipping_methods.map((method, index) => (
+            <Text key={index} className="text-sm text-gray-600">
+              {method.name}
+            </Text>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 

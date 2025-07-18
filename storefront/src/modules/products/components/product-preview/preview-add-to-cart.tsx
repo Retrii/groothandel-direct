@@ -37,7 +37,7 @@ const PreviewAddToCart = ({
   }
   return (
     <Button
-      className="rounded-full p-3 border-none shadow-none bg-emerald-500 hover:bg-emerald-600"
+      className="rounded-full p-3 border-none shadow-none bg-green-500 hover:bg-green-600"
       onClick={(e) => {
         e.preventDefault()
         handleAddToCart()

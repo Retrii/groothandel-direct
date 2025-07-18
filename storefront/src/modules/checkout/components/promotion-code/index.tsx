@@ -71,7 +71,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
               className="flex gap-x-1 my-2 items-center txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="add-discount-button"
             >
-              Enter Promotion Code{" "}
+              Voer promotiecode in{" "}
               {isOpen ? <ChevronUpMini /> : <ChevronDownMini />}
             </button>
 
@@ -91,7 +91,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
                     variant="secondary"
                     data-testid="discount-apply-button"
                   >
-                    Apply
+                    Toepassen
                   </SubmitButton>
                 </div>
 
@@ -108,7 +108,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
           <div className="w-full flex items-center">
             <div className="flex flex-col w-full">
               <Heading className="txt-medium mb-2">
-                Promotion{promotions.length > 1 ? "s" : ""} applied:
+                Toegepaste promotiecode{promotions.length > 1 ? "s" : ""}:
               </Heading>
 
               {promotions.map((promotion) => {

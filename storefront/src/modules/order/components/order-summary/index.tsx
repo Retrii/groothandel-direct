@@ -1,5 +1,6 @@
 import { convertToLocale } from "@/lib/util/money"
 import { HttpTypes } from "@medusajs/types"
+import { Heading } from "@medusajs/ui"
 
 type OrderSummaryProps = {
   order: HttpTypes.StoreOrder
@@ -8,7 +9,7 @@ type OrderSummaryProps = {
 const OrderSummary = ({ order }: OrderSummaryProps) => {
   const getAmount = (amount?: number | null) => {
     if (!amount) {
-      return
+      return "€0,00"
     }
 
     return convertToLocale({
@@ -18,34 +19,48 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
   }
 
   return (
-    <div>
-      <h2 className="text-base-semi">Order Summary</h2>
-      <div className="text-small-regular text-ui-fg-base my-2">
-        <div className="flex flex-col gap-y-1">
-          <div className="flex items-center justify-between">
-            <span>Subtotal</span>
-            <span>{getAmount(order.subtotal)}</span>
-          </div>
+    <div className="p-6">
+      <Heading level="h3" className="mb-4 flex items-center gap-2">
+        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+        Orderoverzicht
+      </Heading>
 
-          {order.discount_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Discount</span>
-              <span>- {getAmount(order.discount_total)}</span>
-            </div>
-          )}
-          <div className="flex items-center justify-between">
-            <span>Shipping</span>
-            <span>{getAmount(order.shipping_total)}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Taxes</span>
-            <span>{getAmount(order.tax_total)}</span>
-          </div>
+      <div className="space-y-3 text-sm">
+        <div className="flex items-center justify-between py-2 border-b border-gray-100">
+          <span className="text-gray-600">Subtotaal</span>
+          <span className="font-medium text-gray-900">
+            {getAmount(order.subtotal)}
+          </span>
         </div>
-        <div className="h-px w-full border-b border-gray-200 border-dashed my-4" />
-        <div className="flex items-center justify-between text-base-regular text-ui-fg-base mb-2">
-          <span>Total</span>
-          <span>{getAmount(order.total)}</span>
+
+        {order.discount_total > 0 && (
+          <div className="flex items-center justify-between py-2 border-b border-gray-100">
+            <span className="text-gray-600">Korting</span>
+            <span className="font-medium text-red-600">
+              - {getAmount(order.discount_total)}
+            </span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between py-2 border-b border-gray-100">
+          <span className="text-gray-600">Verzendkosten</span>
+          <span className="font-medium text-gray-900">
+            {getAmount(order.shipping_total)}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between py-2 border-b border-gray-100">
+          <span className="text-gray-600">BTW</span>
+          <span className="font-medium text-gray-900">
+            {getAmount(order.tax_total)}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between py-3 border-t-2 border-gray-200">
+          <span className="text-base font-semibold text-gray-900">Totaal</span>
+          <span className="text-base font-semibold text-gray-900">
+            {getAmount(order.total)}
+          </span>
         </div>
       </div>
     </div>

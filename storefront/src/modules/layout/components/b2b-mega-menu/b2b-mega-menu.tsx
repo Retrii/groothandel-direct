@@ -152,7 +152,7 @@ export const B2BMegaMenu = ({
         <>
           {/* Hover bridge - invisible area to connect navbar to menu */}
           <div
-            className="fixed left-0 right-0 h-4 z-[59]"
+            className="fixed left-0 right-0 h-4 z-[57]"
             style={{ top: `${headerHeight - 4}px` }}
             onMouseEnter={handleMenuEnter}
             onMouseLeave={handleMenuLeave}
@@ -167,44 +167,8 @@ export const B2BMegaMenu = ({
             {/* Container to keep content centered */}
             <div className="content-container">
               <div className="bg-white min-h-[400px]">
-                {/* Header with Category Info */}
-                <div className="my-6 bg-gradient-to-r from-sky-50 to-sky-100 border border-sky-200 rounded-xl px-8 py-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        {getActiveCategoryObject()?.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 leading-relaxed max-w-md">
-                        {getActiveCategoryObject()?.description ||
-                          "Ontdek onze uitgebreide collectie van hoogwaardige producten"}
-                      </p>
-                    </div>
-
-                    {/* CTA Button */}
-                    <LocalizedClientLink
-                      href={`/categories/${getActiveCategoryObject()?.handle}`}
-                      className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-xl hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 font-semibold hover:shadow-lg hover:scale-105 text-sm"
-                    >
-                      <span>Bekijk alle producten</span>
-                      <svg
-                        className="ml-3 w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </LocalizedClientLink>
-                  </div>
-                </div>
-
                 {/* Subcategories Grid */}
-                <div className="px-8 py-4">
+                <div className="p-4">
                   <div className="grid grid-cols-4 gap-8">
                     {getSubCategories(activeCategory)?.map((subcategory) => {
                       const subSubCategories = getSubSubCategories(
@@ -218,7 +182,7 @@ export const B2BMegaMenu = ({
                             href={`/categories/${subcategory.handle}`}
                             className="block group"
                           >
-                            <h4 className="font-bold text-gray-900 group-hover:text-sky-400 transition-colors duration-200 text-base mb-2">
+                            <h4 className="font-bold text-gray-900 group-hover:text-sky-400 text-base mb-2">
                               {subcategory.name}
                             </h4>
                             <div className="w-8 h-0.5 bg-sky-400 group-hover:w-12 transition-all duration-200"></div>
@@ -233,7 +197,7 @@ export const B2BMegaMenu = ({
                                   <LocalizedClientLink
                                     key={subSubCategory.id}
                                     href={`/categories/${subSubCategory.handle}`}
-                                    className="block text-sm text-gray-600 hover:text-sky-400 hover:translate-x-1 transition-all duration-200"
+                                    className="block text-sm text-gray-600 hover:text-sky-400"
                                   >
                                     {subSubCategory.name}
                                   </LocalizedClientLink>
@@ -241,7 +205,7 @@ export const B2BMegaMenu = ({
                               {subSubCategories.length > 8 && (
                                 <LocalizedClientLink
                                   href={`/categories/${subcategory.handle}`}
-                                  className="block text-xs text-sky-500 hover:text-sky-600 font-medium mt-3"
+                                  className="block text-xs text-sky-500 hover:text-sky-400 font-medium mt-3"
                                 >
                                   +{subSubCategories.length - 8} meer
                                   categorieën

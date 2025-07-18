@@ -20,29 +20,22 @@ export default async function RelatedProducts({
   }
 
   // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductParams & {
-    tags?: string[]
-  } = {}
-  if (region?.id) {
-    queryParams.region_id = region.id
+  const queryParams: any = {
+    limit: 8,
   }
+
+  // Get products from the same collection
   if (product.collection_id) {
     queryParams.collection_id = [product.collection_id]
   }
-  if (product.tags) {
-    queryParams.tag_id = product.tags
-      .map((t) => t.id)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
 
   const products = await listProducts({
     queryParams,
     countryCode,
   }).then(({ response }) => {
-    return response.products.filter(
-      (responseProduct) => responseProduct.id !== product.id
-    )
+    return response.products
+      .filter((responseProduct) => responseProduct.id !== product.id)
+      .slice(0, 8)
   })
 
   if (!products.length) {
@@ -50,11 +43,11 @@ export default async function RelatedProducts({
   }
 
   return (
-    <div className="flex flex-col gap-y-6 small:py-16 py-6 small:px-24 px-6 bg-neutral-100">
-      <Heading level="h2" className="text-xl text-neutral-950 font-normal">
-        Other customers also viewed
+    <div className="flex flex-col gap-y-6">
+      <Heading level="h2" className="text-2xl text-gray-900 font-bold">
+        Gerelateerde producten
       </Heading>
-      <ul className="grid grid-cols-1 small:grid-cols-3 medium:grid-cols-4 gap-x-2 gap-y-8">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 medium:grid-cols-3 large:grid-cols-4 gap-6">
         {products.map((product) => (
           <li key={product.id}>
             <Product region={region} product={product} />

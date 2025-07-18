@@ -17,9 +17,9 @@ function BTWToggle() {
     <div className="flex items-center space-x-2 text-xs">
       <span className="text-sky-50">Prijzen:</span>
       <div className="flex items-center bg-sky-300/20 rounded-full p-1 border border-sky-200/30">
-        <button className="flex items-center space-x-1 bg-emerald-400 px-3 py-1 hover:bg-emerald-500 transition-colors duration-200 rounded-full">
+        <button className="flex items-center space-x-1 bg-green-400 px-3 py-1 hover:bg-green-500 transition-colors duration-200 rounded-full">
           <span className="text-white font-medium">Excl.</span>
-          <span className="text-emerald-50 text-xs">BTW</span>
+          <span className="text-green-50 text-xs">BTW</span>
         </button>
         <button className="flex items-center space-x-1 px-3 py-1 hover:bg-sky-200/20 transition-colors duration-200 rounded-full">
           <span className="text-sky-100 font-medium">Incl.</span>
@@ -36,7 +36,7 @@ export async function NavigationHeader() {
   const categories = await listCategories().catch(() => [])
 
   return (
-    <header className="sticky top-0 inset-x-0 bg-white z-[58]">
+    <header className="sticky top-0 inset-x-0 bg-white z-[56]">
       {/* Top Bar */}
       <div className="bg-sky-400 text-white">
         <div className="content-container">
@@ -67,7 +67,7 @@ export async function NavigationHeader() {
               <LocalizedClientLink className="flex items-center group" href="/">
                 <div className="relative">
                   <LogoIcon className="h-9 w-9 text-sky-400 group-hover:text-sky-500 transition-colors duration-200" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-300 rounded-full opacity-75"></div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-300 rounded-full opacity-75"></div>
                 </div>
                 <div className="ml-3">
                   <h1 className="text-xl font-bold text-gray-900 group-hover:text-sky-400 transition-colors duration-200">

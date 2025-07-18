@@ -87,7 +87,7 @@ const ReviewCard = ({ review }: { review: (typeof mockReviews)[0] }) => {
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-500 rounded-full flex items-center justify-center">
             <span className="text-white font-semibold text-lg">
               {review.customerName.charAt(0)}
             </span>
@@ -135,7 +135,7 @@ export default function ReviewsPage() {
   return (
     <div className=" min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+      <div className="bg-gradient-to-r from-green-500 to-green-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <Heading level="h1" className="text-4xl font-bold mb-4">
@@ -196,7 +196,7 @@ export default function ReviewsPage() {
             Deel uw ervaring en help andere ondernemers bij het maken van de
             juiste keuze.
           </Text>
-          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 font-medium hover:shadow-lg">
+          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-lg hover:from-green-500 hover:to-green-600 transition-all duration-200 font-medium hover:shadow-lg">
             <Star className="mr-2 h-5 w-5" />
             Schrijf een review
           </button>

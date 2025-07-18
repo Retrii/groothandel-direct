@@ -33,10 +33,10 @@ export const MobileB2BMenu = ({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-sky-400 rounded-lg transition-colors duration-200"
+        className="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-sky-400 hover:bg-sky-50 rounded-lg transition-all duration-200 active:scale-95"
       >
         <svg
-          className="w-5 h-5 mr-2"
+          className="w-6 h-6 mr-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -52,7 +52,8 @@ export const MobileB2BMenu = ({
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={setIsOpen}>
+        <Dialog as="div" className="relative z-[9999]" onClose={setIsOpen}>
+          {/* Backdrop */}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -62,115 +63,129 @@ export const MobileB2BMenu = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-25 z-[9998]" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 mb-4"
-                  >
+          {/* Full screen overlay */}
+          <div className="fixed inset-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="h-full w-full bg-white z-[9999]">
+                <div className="flex h-full flex-col">
+                  {/* Header */}
+                  <div className="bg-gradient-to-r from-sky-400 to-sky-500 px-6 py-4">
                     <div className="flex items-center justify-between">
-                      <span>Categorieën</span>
+                      <Dialog.Title className="text-xl font-bold text-white">
+                        Categorieën
+                      </Dialog.Title>
                       <button
                         type="button"
-                        className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                        className="rounded-full p-2 text-white hover:bg-white/20 transition-colors duration-200"
                         onClick={() => setIsOpen(false)}
                       >
                         <XMark className="h-6 w-6" />
                       </button>
                     </div>
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <div className="space-y-2">
+                  </div>
+
+                  {/* Content - Scrollable */}
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="p-6">
+                      {/* All Products Link */}
                       <LocalizedClientLink
                         href="/store"
-                        className="block text-base font-semibold text-gray-900 hover:text-green-600 transition-colors duration-200 pb-2 border-b border-gray-200"
+                        className="block w-full rounded-lg bg-gradient-to-r from-green-400 to-green-500 px-6 py-4 text-center font-semibold text-white hover:from-green-500 hover:to-green-600 transition-all duration-200 mb-6"
                         onClick={() => setIsOpen(false)}
                       >
-                        Alle producten
+                        Alle producten bekijken
                       </LocalizedClientLink>
-                      {mainCategories.map((category) => {
-                        const subCategories = getSubCategories(category.id)
-                        const isExpanded = expandedCategory === category.id
 
-                        return (
-                          <div key={category.id} className="space-y-1">
-                            {subCategories.length > 0 ? (
-                              <button
-                                onClick={() => toggleCategory(category.id)}
-                                className="flex items-center justify-between w-full text-left text-base font-medium text-gray-900 hover:text-green-600 transition-colors duration-200 py-2"
-                              >
-                                <span>{category.name}</span>
-                                <svg
-                                  className={clx(
-                                    "w-4 h-4 transition-transform duration-200",
-                                    isExpanded ? "rotate-180" : ""
-                                  )}
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
+                      {/* Categories */}
+                      <div className="space-y-2">
+                        {mainCategories.map((category) => {
+                          const subCategories = getSubCategories(category.id)
+                          const isExpanded = expandedCategory === category.id
+
+                          return (
+                            <div
+                              key={category.id}
+                              className="border-b border-gray-100 pb-2"
+                            >
+                              {subCategories.length > 0 ? (
+                                <button
+                                  onClick={() => toggleCategory(category.id)}
+                                  className="flex items-center justify-between w-full text-left px-4 py-4 text-lg font-semibold text-gray-900 hover:bg-sky-50 hover:text-sky-400 rounded-lg transition-all duration-200"
                                 >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              </button>
-                            ) : (
-                              <LocalizedClientLink
-                                href={`/categories/${category.handle}`}
-                                className="block text-base font-medium text-gray-900 hover:text-green-600 transition-colors duration-200 py-2"
-                                onClick={() => setIsOpen(false)}
-                              >
-                                {category.name}
-                              </LocalizedClientLink>
-                            )}
-                            {isExpanded && subCategories.length > 0 && (
-                              <div className="pl-4 space-y-1">
-                                {subCategories.map((subCategory) => (
-                                  <LocalizedClientLink
-                                    key={subCategory.id}
-                                    href={`/categories/${subCategory.handle}`}
-                                    className="block text-sm text-gray-600 hover:text-green-600 transition-colors duration-200 py-1"
-                                    onClick={() => setIsOpen(false)}
+                                  <span>{category.name}</span>
+                                  <svg
+                                    className={clx(
+                                      "w-5 h-5 transition-transform duration-200 text-gray-400",
+                                      isExpanded ? "rotate-180" : ""
+                                    )}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
                                   >
-                                    {subCategory.name}
-                                  </LocalizedClientLink>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )
-                      })}
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M19 9l-7 7-7-7"
+                                    />
+                                  </svg>
+                                </button>
+                              ) : (
+                                <LocalizedClientLink
+                                  href={`/categories/${category.handle}`}
+                                  className="block px-4 py-4 text-lg font-semibold text-gray-900 hover:bg-sky-50 hover:text-sky-400 rounded-lg transition-all duration-200"
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {category.name}
+                                </LocalizedClientLink>
+                              )}
+
+                              {/* Subcategories */}
+                              {isExpanded && subCategories.length > 0 && (
+                                <div className="mt-2 ml-4 space-y-1">
+                                  {subCategories.map((subCategory) => (
+                                    <LocalizedClientLink
+                                      key={subCategory.id}
+                                      href={`/categories/${subCategory.handle}`}
+                                      className="block px-4 py-3 text-base text-gray-600 hover:bg-sky-50 hover:text-sky-400 rounded-lg transition-all duration-200"
+                                      onClick={() => setIsOpen(false)}
+                                    >
+                                      {subCategory.name}
+                                    </LocalizedClientLink>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  {/* Footer */}
+                  <div className="border-t border-gray-200 p-6">
                     <button
                       type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 transition-colors duration-200"
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                       onClick={() => setIsOpen(false)}
                     >
                       Sluiten
                     </button>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
           </div>
         </Dialog>
       </Transition>
