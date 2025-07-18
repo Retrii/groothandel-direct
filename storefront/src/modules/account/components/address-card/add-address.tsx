@@ -36,7 +36,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
     return (
       <div className="relative group">
         <button
-          className="w-full h-full min-h-[220px] bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-dashed border-green-300 rounded-lg p-8 flex flex-col items-center justify-center hover:border-green-400 hover:from-green-100 hover:to-emerald-100 transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-lg"
+          className="w-full h-full min-h-[220px] bg-gradient-to-br from-green-50 to-green-50 border-2 border-dashed border-green-300 rounded-lg p-8 flex flex-col items-center justify-center hover:border-green-400 hover:from-green-100 hover:to-green-100 transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-lg"
           onClick={() => setIsExpanded(true)}
           data-testid="add-address-button"
         >
@@ -69,7 +69,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
   return (
     <div className="w-full h-full min-h-[220px] bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
       {/* Form Header */}
-      <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4">
+      <div className="bg-gradient-to-r from-green-600 to-green-600 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -285,7 +285,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
             </button>
             <SubmitButton
               data-testid="save-button"
-              className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium px-6 py-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
+              className="flex-1 bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 text-white font-medium px-6 py-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
             >
               <svg
                 className="w-4 h-4 mr-2"

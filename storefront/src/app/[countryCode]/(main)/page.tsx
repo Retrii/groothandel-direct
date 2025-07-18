@@ -1,16 +1,20 @@
 import { listRegions } from "@/lib/data/regions"
-import FeaturedProducts from "@/modules/home/components/featured-products"
-import Hero from "@/modules/home/components/hero"
-import SkeletonFeaturedProducts from "@/modules/skeletons/templates/skeleton-featured-products"
+import Bestsellers from "@/modules/home/components/bestsellers"
+import FeaturedBrands from "@/modules/home/components/featured-brands"
+import FeaturedCategories from "@/modules/home/components/featured-categories"
+import LatestArticles from "@/modules/home/components/latest-articles"
+import MarketingBlocks from "@/modules/home/components/marketing-blocks"
+import SeoCtaSection from "@/modules/home/components/seo-cta-section"
+import SpecialOffers from "@/modules/home/components/special-offers"
 import { Metadata } from "next"
 import { Suspense } from "react"
 
 export const dynamicParams = true
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Groothandel Direct - B2B Producten voor Professionals",
   description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+    "Groothandel Direct is uw betrouwbare partner voor B2B producten. Scherpe groothandelsprijzen, uitgebreid assortiment en persoonlijke service voor zakelijke klanten.",
 }
 
 export async function generateStaticParams() {
@@ -24,19 +28,109 @@ export async function generateStaticParams() {
   return countryCodes.map((countryCode) => ({ countryCode }))
 }
 
+// Enhanced loading components
+const LoadingSkeleton = ({ className = "" }: { className?: string }) => (
+  <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />
+)
+
 export default async function Home(props: {
   params: Promise<{ countryCode: string }>
 }) {
   const params = await props.params
-
   const { countryCode } = params
 
   return (
-    <div className="flex flex-col gap-y-2 m-2">
-      <Hero />
-      <Suspense fallback={<SkeletonFeaturedProducts />}>
-        <FeaturedProducts countryCode={countryCode} />
+    <div className="flex flex-col">
+      {/* Marketing Blocks (replaces Hero) */}
+      <section className="py-6">
+        <div className="content-container">
+          <MarketingBlocks />
+        </div>
+      </section>
+
+      {/* Featured Categories */}
+      <Suspense
+        fallback={
+          <section className="py-6">
+            <div className="content-container">
+              <div className="mb-4">
+                <LoadingSkeleton className="h-6 w-48 mb-1" />
+                <LoadingSkeleton className="h-3 w-72" />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[...Array(6)].map((_, i) => (
+                  <LoadingSkeleton
+                    key={i}
+                    className="aspect-[4/3] rounded-lg"
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        }
+      >
+        <FeaturedCategories />
       </Suspense>
+
+      {/* Special Offers */}
+      <SpecialOffers />
+
+      {/* Bestsellers */}
+      <Suspense
+        fallback={
+          <section className="py-6">
+            <div className="content-container">
+              <div className="text-center mb-4">
+                <LoadingSkeleton className="h-6 w-32 mx-auto mb-1" />
+                <LoadingSkeleton className="h-3 w-48 mx-auto" />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="bg-gray-50 rounded-lg">
+                    <LoadingSkeleton className="aspect-square rounded-t-lg" />
+                    <div className="p-2">
+                      <LoadingSkeleton className="h-3 w-full mb-1" />
+                      <LoadingSkeleton className="h-4 w-2/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        }
+      >
+        <Bestsellers countryCode={countryCode} />
+      </Suspense>
+
+      {/* Featured Brands */}
+      <Suspense
+        fallback={
+          <section className="py-6">
+            <div className="content-container">
+              <div className="text-center mb-4">
+                <LoadingSkeleton className="h-6 w-32 mx-auto mb-1" />
+                <LoadingSkeleton className="h-3 w-48 mx-auto" />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {[...Array(8)].map((_, i) => (
+                  <LoadingSkeleton
+                    key={i}
+                    className="aspect-square rounded-lg"
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        }
+      >
+        <FeaturedBrands />
+      </Suspense>
+
+      {/* Latest Articles */}
+      <LatestArticles />
+
+      {/* SEO Content & CTA */}
+      <SeoCtaSection />
     </div>
   )
 }

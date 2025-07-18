@@ -51,20 +51,26 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     });
 
     // If we have collections, fetch their products separately to show correct count
-    if (collections && collections.length > 0) {
+    if (collections && Array.isArray(collections) && collections.length > 0) {
       for (const collection of collections) {
-        if (collection.id) {
+        // Add null/undefined checking
+        if (collection && collection.id) {
           try {
             // Count products for this collection
             const { data: allProducts } = await query.graph({
               entity: "product",
               fields: ["id", "collection_id"],
             });
-            const products = allProducts.filter(
-              (p: any) => p.collection_id === collection.id
-            );
-            // Add products to collection for count
-            (collection as any).products = products || [];
+
+            if (allProducts && Array.isArray(allProducts)) {
+              const products = allProducts.filter(
+                (p: any) => p && p.collection_id === collection.id
+              );
+              // Add products to collection for count
+              (collection as any).products = products || [];
+            } else {
+              (collection as any).products = [];
+            }
           } catch (productError) {
             console.warn(
               `Failed to fetch products for collection ${collection.id}:`,
@@ -72,13 +78,16 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
             );
             (collection as any).products = [];
           }
+        } else {
+          // Handle case where collection is null/undefined
+          console.warn("Found null or undefined collection in results");
         }
       }
     }
 
     res.json({
-      collections,
-      count: metadata?.count || collections.length,
+      collections: collections || [],
+      count: metadata?.count || (collections ? collections.length : 0),
       offset: parseInt(offset as string),
       limit: parseInt(limit as string),
     });
@@ -87,6 +96,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     res.status(500).json({
       code: "collections_error",
       message: "Failed to fetch collections",
+      collections: [], // Provide empty array as fallback
+      count: 0,
+      offset: parseInt(offset as string),
+      limit: parseInt(limit as string),
     });
   }
 };
