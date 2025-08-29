@@ -89,7 +89,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return (
+        <Button disabled className="w-full">
+          Selecteer een betaalmethode
+        </Button>
+      )
   }
 }
 
@@ -125,18 +129,20 @@ const RequestApprovalButton = ({
       <Container className="flex flex-col gap-y-2">
         <Text className="text-neutral-700-950 text-xs text-center">
           {requires_admin_approval && requires_sales_manager_approval
-            ? "This order requires approval by both a company admin and a sales manager."
+            ? "Deze bestelling vereist goedkeuring van zowel een bedrijfsbeheerder als een salesmanager."
             : requires_admin_approval
-            ? "This order requires approval by a company admin."
-            : "This order requires approval by a sales manager."}
+            ? "Deze bestelling vereist goedkeuring van een bedrijfsbeheerder."
+            : "Deze bestelling vereist goedkeuring van een salesmanager."}
         </Text>
         <Button
-          className="w-full h-10 rounded-full shadow-none"
+          className="w-full"
           disabled={notReady || isPendingAdminApproval}
           onClick={createApproval}
           isLoading={submitting}
         >
-          {isPendingAdminApproval ? "Approval Requested" : "Request Approval"}
+          {isPendingAdminApproval
+            ? "Goedkeuring aangevraagd"
+            : "Goedkeuring aanvragen"}
         </Button>
       </Container>
     </>
@@ -260,7 +266,7 @@ const StripePaymentButton = ({
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        Bestelling plaatsen
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -376,7 +382,7 @@ const ManualTestPaymentButton = ({
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        Bestelling plaatsen
       </Button>
       <ErrorMessage
         error={errorMessage}

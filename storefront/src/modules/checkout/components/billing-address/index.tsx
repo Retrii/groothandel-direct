@@ -6,11 +6,9 @@ import BillingAddressForm from "@/modules/checkout/components/billing-address-fo
 import ErrorMessage from "@/modules/checkout/components/error-message"
 import { SubmitButton } from "@/modules/checkout/components/submit-button"
 import CheckboxWithLabel from "@/modules/common/components/checkbox"
-import Divider from "@/modules/common/components/divider"
 import { B2BCart } from "@/types"
 import { ApprovalStatusType } from "@/types/approval"
-import { CheckCircleSolid } from "@medusajs/icons"
-import { clx, Container, Heading, Text, useToggleState } from "@medusajs/ui"
+import { useToggleState } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
 
@@ -67,81 +65,76 @@ const BillingAddress = ({ cart }: { cart: B2BCart | null }) => {
   }
 
   return (
-    <Container>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex small:flex-row flex-col small:items-center justify-between w-full">
-          <div className="flex gap-x-2 items-center">
-            <Heading
-              level="h2"
-              className={clx(
-                "flex flex-row text-xl gap-x-2 items-center font-medium",
-                {
-                  "opacity-50 pointer-events-none select-none":
-                    !isOpen && !cart?.billing_address?.address_1,
-                }
-              )}
-            >
-              Billing Address
-            </Heading>
-            {!isOpen && cart?.billing_address?.address_1 && (
-              <CheckCircleSolid />
-            )}
-          </div>
-          {cart?.shipping_address?.address_1 && (
+    <div className="px-6 py-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-lg font-medium text-gray-900">Factuuradres</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Waar moet de factuur naartoe?
+          </p>
+        </div>
+
+        {cart?.shipping_address?.address_1 && (
+          <div className="flex items-center">
             <CheckboxWithLabel
               disabled={cartApprovalStatus === ApprovalStatusType.PENDING}
-              label="Same as shipping address"
+              label="Zelfde als verzendadres"
               name="same_as_billing"
               checked={sameAsBilling}
               onChange={handleToggleSameAsBilling}
               data-testid="billing-address-checkbox"
             />
-          )}
-        </div>
-        {!isOpen && cart?.billing_address?.address_1 && <Divider />}
-        {isOpen ? (
-          <div>
-            <Divider />
-            <form action={handleSubmit}>
-              <div className="py-2">
-                <BillingAddressForm cart={cart} />
-              </div>
-              <div className="flex flex-col gap-y-2 items-end">
-                <SubmitButton
-                  className="mt-6"
-                  data-testid="submit-address-button"
-                >
-                  Next step
-                </SubmitButton>
-                <ErrorMessage
-                  error={error}
-                  data-testid="address-error-message"
-                />
-              </div>
-            </form>
           </div>
+        )}
+      </div>
+
+      <div className="mt-4">
+        {isOpen ? (
+          <form action={handleSubmit}>
+            <BillingAddressForm cart={cart} />
+            <div className="mt-5">
+              <SubmitButton
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium"
+                data-testid="submit-address-button"
+              >
+                Volgende stap
+              </SubmitButton>
+              <ErrorMessage error={error} data-testid="address-error-message" />
+            </div>
+          </form>
         ) : (
           cart &&
           cart.shipping_address?.address_1 &&
           cart.billing_address?.first_name && (
-            <div className="text-small-regular">
-              <div className="flex items-start gap-x-8">
-                <div className="flex" data-testid="billing-address-summary">
-                  <Text className="txt-medium text-ui-fg-subtle">
+            <div data-testid="billing-address-summary">
+              {sameAsBilling ? (
+                <p className="text-sm text-gray-600 italic">
+                  Zelfde als verzendadres
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-gray-900">
                     {cart.billing_address.first_name}{" "}
-                    {cart.billing_address.last_name},{" "}
-                    {cart.billing_address.address_1},{" "}
+                    {cart.billing_address.last_name}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {cart.billing_address.address_2}{" "}
+                    {cart.billing_address.address_1}
+                  </p>
+                  <p className="text-sm text-gray-700">
                     {cart.billing_address.postal_code},{" "}
-                    {cart.billing_address.city},{" "}
+                    {cart.billing_address.city}
+                  </p>
+                  <p className="text-sm text-gray-700">
                     {cart.billing_address.country_code?.toUpperCase()}
-                  </Text>
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           )
         )}
       </div>
-    </Container>
+    </div>
   )
 }
 

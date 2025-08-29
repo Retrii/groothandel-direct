@@ -1,8 +1,8 @@
-import { Container, Heading, Text } from "@medusajs/ui"
+import { Container, Text } from "@medusajs/ui"
 
 import { isStripe, paymentInfoMap } from "@/lib/constants"
-import Divider from "@/modules/common/components/divider"
 import { convertToLocale } from "@/lib/util/money"
+import Divider from "@/modules/common/components/divider"
 import { HttpTypes } from "@medusajs/types"
 
 type PaymentDetailsProps = {
@@ -14,38 +14,36 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
 
   return (
     <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
-        Payment
-      </Heading>
+      <h3 className="text-base font-semibold text-gray-900 mb-3">Betaling</h3>
       <div>
         {payment && (
-          <div className="flex items-start gap-x-1 w-full">
-            <div className="flex flex-col w-1/3">
+          <div className="space-y-4">
+            <div>
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+                Betaalmethode
               </Text>
               <Text
                 className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method"
+                data-testid="betaling-methode"
               >
                 {paymentInfoMap[payment.provider_id].title}
               </Text>
             </div>
-            <div className="flex flex-col w-2/3">
+            <div>
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment details
+                Betalingsgegevens
               </Text>
               <div className="flex gap-2 txt-medium text-ui-fg-subtle items-center">
                 <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
                   {paymentInfoMap[payment.provider_id].icon}
                 </Container>
-                <Text data-testid="payment-amount">
+                <Text data-testid="betaling-bedrag">
                   {isStripe(payment.provider_id) && payment.data?.card_last4
                     ? `**** **** **** ${payment.data.card_last4}`
                     : `${convertToLocale({
                         amount: payment.amount,
                         currency_code: order.currency_code,
-                      })} paid at ${new Date(
+                      })} betaald op ${new Date(
                         payment.created_at ?? ""
                       ).toLocaleString()}`}
                 </Text>

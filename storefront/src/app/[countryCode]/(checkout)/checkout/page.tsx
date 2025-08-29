@@ -8,7 +8,9 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "Checkout",
+  title: "Afrekenen | Groothandel Direct",
+  description:
+    "Vul uw gegevens in om uw bestelling veilig af te ronden bij Groothandel Direct.",
 }
 
 export default async function Checkout({
@@ -27,10 +29,21 @@ export default async function Checkout({
 
   return (
     <Wrapper cart={cart}>
-      <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] content-container gap-2 py-24 h-full">
-        <CheckoutForm cart={cart} customer={customer} />
-        <div className="relative">
-          <CheckoutSummary cart={cart} />
+      <div className="min-h-screen py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Checkout Form - Takes 2 columns */}
+            <div className="lg:col-span-2">
+              <CheckoutForm cart={cart} customer={customer} />
+            </div>
+
+            {/* Order Summary - Takes 1 column */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-4">
+                <CheckoutSummary cart={cart} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Wrapper>

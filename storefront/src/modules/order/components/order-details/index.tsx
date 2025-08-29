@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
+import { Badge } from "@medusajs/ui"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -13,42 +13,61 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
     year: "numeric",
   })
 
+  const formattedTime = createdAt.toLocaleTimeString("nl-NL", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+
+  const getStatusInfo = (status: string) => {
+    switch (status) {
+      case "pending":
+        return {
+          label: "In behandeling",
+          color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+        }
+      case "completed":
+        return {
+          label: "Voltooid",
+          color: "bg-green-100 text-green-800 border-green-200",
+        }
+      case "canceled":
+        return {
+          label: "Geannuleerd",
+          color: "bg-red-100 text-red-800 border-red-200",
+        }
+      default:
+        return {
+          label: status,
+          color: "bg-gray-100 text-gray-800 border-gray-200",
+        }
+    }
+  }
+
+  const statusInfo = getStatusInfo(order.status)
+
   return (
-    <div className="p-6">
-      <Heading level="h3" className="mb-4 flex items-center gap-2">
-        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-        Ordergegevens
-      </Heading>
+    <div>
+      <h3 className="text-base font-semibold text-gray-900 mb-3">
+        Orderdetails
+      </h3>
 
-      <div className="space-y-3 text-sm">
-        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-          <Text className="text-gray-600">Ordernummer</Text>
-          <Text className="font-medium text-gray-900">#{order.display_id}</Text>
+      <div className="space-y-2">
+        <div className="flex justify-between py-1 border-b">
+          <span className="text-sm text-gray-600">Ordernummer</span>
+          <span className="text-sm font-semibold">#{order.display_id}</span>
         </div>
 
-        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-          <Text className="text-gray-600">Orderdatum</Text>
-          <Text className="font-medium text-gray-900">{formattedDate}</Text>
+        <div className="flex justify-between py-1 border-b">
+          <span className="text-sm text-gray-600">Datum</span>
+          <div className="text-right">
+            <div className="text-sm font-semibold">{formattedDate}</div>
+            <div className="text-xs text-gray-500">{formattedTime}</div>
+          </div>
         </div>
 
-        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-          <Text className="text-gray-600">Status</Text>
-          <Text className="font-medium text-gray-900 capitalize">
-            {order.status === "pending"
-              ? "In behandeling"
-              : order.status === "completed"
-              ? "Voltooid"
-              : order.status === "canceled"
-              ? "Geannuleerd"
-              : order.status}
-          </Text>
-        </div>
-
-        <div className="pt-2">
-          <Text className="text-gray-600">
-            We hebben de orderbevestiging verzonden naar{" "}
-            <span className="font-medium text-gray-900">{order.email}</span>.
-          </Text>
+        <div className="flex justify-between py-1 border-b">
+          <span className="text-sm text-gray-600">Status</span>
+          <Badge className={statusInfo.color}>{statusInfo.label}</Badge>
         </div>
       </div>
     </div>

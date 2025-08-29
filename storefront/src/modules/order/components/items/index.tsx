@@ -14,7 +14,7 @@ const Items = ({ items, order }: ItemsProps) => {
   return (
     <div className="flex flex-col">
       <Table>
-        <Table.Body data-testid="products-table" className="border-none">
+        <Table.Body data-testid="artikelen-table" className="border-none">
           {items?.length
             ? items
                 .sort((a, b) => {

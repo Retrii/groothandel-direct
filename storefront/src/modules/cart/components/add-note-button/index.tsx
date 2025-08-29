@@ -46,61 +46,117 @@ const AddNoteButton = ({
   }
 
   return (
-    <div className="relative w-fit flex items-center justify-center">
+    <div className="w-full">
       {!note && !isOpen && (
         <button
           className={clx(
-            "text-neutral-950 text-xs shadow-[0_0_0_1px_rgba(0,0,0,0.1)] rounded-full px-2 py-1 w-fit min-w-20 h-6 flex items-center justify-center hover:bg-neutral-100 transition-all duration-300",
-            isOpen ? "opacity-0 pointer-events-none" : "opacity-100",
+            "w-full text-left text-xs text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 transition-all duration-200 flex items-center gap-2",
             disabled ? "opacity-50 pointer-events-none" : "opacity-100"
           )}
           onClick={() => setIsOpen(true)}
           disabled={disabled}
         >
+          <svg
+            className="w-3 h-3"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
           Notitie toevoegen
         </button>
       )}
-      {note?.length > 0 && (
-        <span
-          className={clx(
-            "flex transition-opacity duration-150 items-center justify-center gap-x-1 text-neutral-600 text-xs line-clamp-none",
-            isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-          )}
-        >
-          <span className="text-neutral-950">Notitie:&nbsp;</span>
-          <span
-            className="text-neutral-600 italic cursor-pointer hover:text-neutral-950 hover:underline"
-            onClick={() => setIsOpen(true)}
-          >
-            {note}
-          </span>
-          <button
-            className="text-neutral-600 text-xs ml-2 hover:text-ui-fg-interactive-hover"
-            onClick={deleteNote}
-          >
-            x
-          </button>
-        </span>
-      )}
-      <div
-        className={`absolute left-0 flex text-neutral-600 text-xs transition-all duration-150 items-center justify-center self-center ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <span className="text-neutral-950">Notitie:&nbsp;</span>
 
-        <Input
-          ref={inputRef}
-          className="w-fit small:max-w-40 max-w-32 h-6 flex items-center justify-center text-neutral-950 text-xs rounded-full"
-          type="text"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onBlur={() => handleBlur()}
-        />
-      </div>
+      {note?.length > 0 && !isOpen && (
+        <div className="bg-sky-50 border border-sky-200 rounded-lg p-3">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <svg
+                  className="w-3 h-3 text-sky-500 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                <span className="text-xs font-medium text-sky-700">
+                  Notitie
+                </span>
+              </div>
+              <p
+                className="text-xs text-sky-600 cursor-pointer hover:text-sky-700 break-words"
+                onClick={() => setIsOpen(true)}
+              >
+                {note}
+              </p>
+            </div>
+            <button
+              className="text-sky-500 hover:text-sky-700 p-1 hover:bg-sky-100 rounded transition-colors flex-shrink-0"
+              onClick={deleteNote}
+              title="Notitie verwijderen"
+            >
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isOpen && (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <svg
+              className="w-3 h-3 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+            <span className="text-xs font-medium text-gray-700">
+              Notitie bewerken
+            </span>
+          </div>
+          <Input
+            ref={inputRef}
+            className="w-full text-xs bg-white border-gray-300 rounded-lg"
+            type="text"
+            placeholder="Voeg een notitie toe..."
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e)}
+            onBlur={() => handleBlur()}
+          />
+        </div>
+      )}
     </div>
   )
 }

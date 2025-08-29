@@ -1,5 +1,5 @@
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import { BookOpen, Calendar, ChevronRight, Clock } from "@medusajs/icons"
+import { ChevronRight } from "@medusajs/icons"
 import { Heading } from "@medusajs/ui"
 
 // Professional cleaning & hygiene blog articles
@@ -28,7 +28,7 @@ const mockArticles = [
     category: "Duurzaamheid",
     author: "Mark van der Berg",
     image:
-      "https://images.unsplash.com/photo-1585559700398-b4cb50fe4737?w=400&h=300&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&auto=format&q=80",
   },
 ]
 
@@ -79,7 +79,6 @@ export default function LatestArticles() {
                   {/* Category Badge */}
                   <div className="absolute top-3 left-3">
                     <span className="inline-flex items-center bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                      <BookOpen className="w-3 h-3 mr-1" />
                       {article.category}
                     </span>
                   </div>
@@ -90,7 +89,6 @@ export default function LatestArticles() {
                   {/* Meta info */}
                   <div className="flex items-center gap-4 text-xs text-gray-500 mb-2">
                     <div className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
                       <span>
                         {new Date(article.date).toLocaleDateString("nl-NL", {
                           day: "numeric",
@@ -100,7 +98,6 @@ export default function LatestArticles() {
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
                       <span>{article.readTime}</span>
                     </div>
                   </div>

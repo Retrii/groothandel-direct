@@ -11,6 +11,7 @@ const ContactDetailsForm = ({
 }) => {
   const [formData, setFormData] = useState<Record<string, string>>({
     email: "",
+    phone: "",
     invoice_recipient: "",
     cost_center: "",
     requisition_number: "",
@@ -28,6 +29,7 @@ const ContactDetailsForm = ({
       setFormData((prevState) => ({
         ...prevState,
         email: cart.email || "",
+        phone: cart.metadata?.phone?.toString() || customer?.phone || "",
         invoice_recipient: cart.metadata?.invoice_recipient?.toString() || "",
         cost_center: cart.metadata?.cost_center?.toString() || "",
         requisition_number: cart.metadata?.requisition_number?.toString() || "",
@@ -35,7 +37,7 @@ const ContactDetailsForm = ({
         notes: cart.metadata?.notes?.toString() || "",
       }))
     }
-  }, [cart])
+  }, [cart, customer])
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -49,59 +51,75 @@ const ContactDetailsForm = ({
   }
 
   return (
-    <div className="flex flex-col small:grid small:grid-cols-2 gap-4">
-      <Input
-        label="Email"
-        name="email"
-        autoComplete="email"
-        value={formData["email"]}
-        onChange={handleChange}
-        required
-        data-testid="email-input"
-        className="small:col-span-2"
-      />
-      <Input
-        label="Invoice recipient"
-        name="invoice_recipient"
-        autoComplete="family-name"
-        value={formData["invoice_recipient"]}
-        onChange={handleChange}
-        data-testid="invoice-recipient-input"
-      />
-      <Input
-        label="Cost center"
-        name="cost_center"
-        value={formData["cost_center"]}
-        onChange={handleChange}
-        data-testid="cost-center-input"
-      />
-      <Input
-        label="Requisition number"
-        name="requisition_number"
-        value={formData["requisition_number"]}
-        onChange={handleChange}
-        data-testid="requisition-number-input"
-      />
-      <Input
-        label="Door code/goods mark"
-        name="door_code"
-        value={formData["door_code"]}
-        onChange={handleChange}
-        data-testid="door-code-input"
-      />
-      <div className="col-span-2">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="Notes"
+          label="E-mailadres"
+          name="email"
+          type="email"
+          autoComplete="email"
+          value={formData["email"]}
+          onChange={handleChange}
+          required
+          data-testid="email-input"
+        />
+        <Input
+          label="Telefoonnummer (optioneel)"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          value={formData["phone"]}
+          onChange={handleChange}
+          data-testid="phone-input"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input
+          label="Factuur ontvanger"
+          name="invoice_recipient"
+          autoComplete="name"
+          value={formData["invoice_recipient"]}
+          onChange={handleChange}
+          data-testid="invoice-recipient-input"
+        />
+        <Input
+          label="Kostenplaats"
+          name="cost_center"
+          value={formData["cost_center"]}
+          onChange={handleChange}
+          data-testid="cost-center-input"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input
+          label="Bestelnummer"
+          name="requisition_number"
+          value={formData["requisition_number"]}
+          onChange={handleChange}
+          data-testid="requisition-number-input"
+        />
+        <Input
+          label="Deurcode/goederenmarkering"
+          name="door_code"
+          value={formData["door_code"]}
+          onChange={handleChange}
+          data-testid="door-code-input"
+        />
+      </div>
+
+      <div>
+        <Input
+          label="Opmerkingen"
           name="notes"
           value={formData["notes"]}
           onChange={handleChange}
           data-testid="notes-input"
-          className="small:col-span-2"
         />
-        <label className="text-xs italic text-neutral-500">
-          The note will only appear on the invoice and order confirmation and
-          will not be read by the merchant.
-        </label>
+        <p className="text-xs text-gray-500 mt-1">
+          Deze opmerking verschijnt alleen op de factuur en orderbevestiging.
+        </p>
       </div>
     </div>
   )

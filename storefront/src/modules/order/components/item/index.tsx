@@ -13,8 +13,13 @@ type ItemProps = {
 const Item = ({ item, order }: ItemProps) => {
   return (
     <div className="flex gap-4 p-4 border border-gray-100 rounded-lg hover:border-gray-200 transition-colors">
-      <div className="flex-shrink-0">
-        <Thumbnail thumbnail={item.thumbnail} size="square" />
+      <div className="flex-shrink-0 w-16 h-16">
+        <Thumbnail
+          thumbnail={item.thumbnail}
+          images={item.variant?.product?.images}
+          size="square"
+          className="rounded-md border border-gray-200"
+        />
       </div>
 
       <div className="flex-1 min-w-0">
@@ -22,13 +27,13 @@ const Item = ({ item, order }: ItemProps) => {
           <div className="flex-1 min-w-0">
             <Text
               className="font-medium text-gray-900 mb-1"
-              data-testid="product-name"
+              data-testid="artikel-name"
             >
               {item.product_title}
             </Text>
             <LineItemOptions
               variant={item.variant}
-              data-testid="product-variant"
+              data-testid="artikel-variant"
             />
           </div>
 

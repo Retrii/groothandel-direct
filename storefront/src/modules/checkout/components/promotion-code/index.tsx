@@ -6,7 +6,7 @@ import { convertToLocale } from "@/lib/util/money"
 import Trash from "@/modules/common/icons/trash"
 import { B2BCart } from "@/types"
 import { ChevronDownMini, ChevronUpMini } from "@medusajs/icons"
-import { Badge, Heading, Input, Text } from "@medusajs/ui"
+import { Badge, Input } from "@medusajs/ui"
 import { usePathname } from "next/navigation"
 import React, { useActionState } from "react"
 import ErrorMessage from "../error-message"
@@ -45,131 +45,125 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
     if (!code) {
       return
     }
-    const input = document.getElementById("promotion-input") as HTMLInputElement
-    const codes = promotions
-      .filter((p) => p.code === undefined)
-      .map((p) => p.code!)
-    codes.push(code.toString())
 
-    await applyPromotions(codes)
+    try {
+      const input = document.getElementById(
+        "promotion-input"
+      ) as HTMLInputElement
+      const codes = promotions
+        .filter((p) => p.code === undefined)
+        .map((p) => p.code!)
+      codes.push(code.toString())
 
-    if (input) {
-      input.value = ""
+      await applyPromotions(codes)
+
+      if (input) {
+        input.value = ""
+      }
+      setIsOpen(false) // Close the form on success
+    } catch (error: any) {
+      // Error will be handled by the form action
     }
   }
 
   const [message, formAction] = useActionState(submitPromotionForm, null)
 
   return (
-    <div className="w-full bg-white flex flex-col">
-      <div className="txt-medium">
-        {!isCheckout && !isPendingApproval && (
-          <form action={(a) => addPromotionCode(a)} className="w-full mb-5">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              type="button"
-              className="flex gap-x-1 my-2 items-center txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-              data-testid="add-discount-button"
-            >
-              Voer promotiecode in{" "}
-              {isOpen ? <ChevronUpMini /> : <ChevronDownMini />}
-            </button>
-
-            {isOpen && (
-              <>
-                <div className="grid grid-cols-[1fr_auto] w-full gap-x-2">
-                  <Input
-                    className="w-full"
-                    id="promotion-input"
-                    name="code"
-                    type="text"
-                    autoFocus={false}
-                    data-testid="discount-input"
-                  />
-                  <SubmitButton
-                    className="w-fit h-8"
-                    variant="secondary"
-                    data-testid="discount-apply-button"
-                  >
-                    Toepassen
-                  </SubmitButton>
-                </div>
-
-                <ErrorMessage
-                  error={message}
-                  data-testid="discount-error-message"
-                />
-              </>
+    <div className="space-y-3 bg-white border border-gray-200 rounded-lg p-3">
+      {!isCheckout && !isPendingApproval && (
+        <>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            className="flex items-center justify-between w-full text-left text-sm text-gray-700 hover:text-gray-900 "
+            data-testid="add-discount-button"
+          >
+            <span>Promotiecode toevoegen</span>
+            {isOpen ? (
+              <ChevronUpMini className="w-4 h-4" />
+            ) : (
+              <ChevronDownMini className="w-4 h-4" />
             )}
-          </form>
-        )}
+          </button>
 
-        {promotions.length > 0 && (
-          <div className="w-full flex items-center">
-            <div className="flex flex-col w-full">
-              <Heading className="txt-medium mb-2">
-                Toegepaste promotiecode{promotions.length > 1 ? "s" : ""}:
-              </Heading>
+          {isOpen && (
+            <form action={formAction} className="mt-3 space-y-2">
+              <Input
+                className="w-full h-9 text-sm bg-white"
+                id="promotion-input"
+                name="code"
+                type="text"
+                placeholder="Voer promotiecode in"
+                autoFocus={false}
+                data-testid="discount-input"
+              />
+              <SubmitButton
+                className="w-full h-9 text-sm"
+                data-testid="discount-apply-button"
+              >
+                Toepassen
+              </SubmitButton>
 
-              {promotions.map((promotion) => {
-                return (
-                  <div
-                    key={promotion.id}
-                    className="flex items-center justify-between w-full max-w-full mb-2"
-                    data-testid="discount-row"
-                  >
-                    <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
-                      <span className="truncate" data-testid="discount-code">
-                        <Badge
-                          color={promotion.is_automatic ? "green" : "blue"}
-                          size="small"
-                        >
-                          {promotion.code}
-                        </Badge>{" "}
-                        (
-                        {promotion.application_method?.value !== undefined &&
-                          promotion.application_method.currency_code !==
-                            undefined && (
-                            <>
-                              {promotion.application_method.type ===
-                              "percentage"
-                                ? `${promotion.application_method.value}%`
-                                : convertToLocale({
-                                    amount: promotion.application_method.value,
-                                    currency_code:
-                                      promotion.application_method
-                                        .currency_code,
-                                  })}
-                            </>
-                          )}
-                        )
-                      </span>
-                    </Text>
-                    {!promotion.is_automatic && !isCheckout && (
-                      <button
-                        className="flex items-center"
-                        onClick={() => {
-                          if (!promotion.code) {
-                            return
-                          }
+              <ErrorMessage
+                error={message}
+                data-testid="discount-error-message"
+              />
+            </form>
+          )}
+        </>
+      )}
 
-                          removePromotionCode(promotion.code)
-                        }}
-                        data-testid="remove-discount-button"
-                      >
-                        <Trash size={14} />
-                        <span className="sr-only">
-                          Remove discount code from order
-                        </span>
-                      </button>
+      {promotions.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-gray-900">
+            Toegepaste promoties
+          </p>
+          {promotions.map((promotion) => (
+            <div
+              className="flex items-center justify-between bg-green-50 border border-green-200 rounded p-2"
+              key={promotion.id}
+              data-testid="discount-row"
+            >
+              <div className="flex items-center gap-2">
+                <Badge className="text-xs">{promotion.code}</Badge>
+                <span className="text-xs text-gray-600">
+                  (
+                  {promotion.application_method?.value !== undefined &&
+                    promotion.application_method.currency_code !==
+                      undefined && (
+                      <>
+                        {promotion.application_method.type === "percentage"
+                          ? `${promotion.application_method.value}%`
+                          : convertToLocale({
+                              amount: promotion.application_method.value,
+                              currency_code:
+                                promotion.application_method.currency_code,
+                            })}
+                      </>
                     )}
-                  </div>
-                )
-              })}
+                  )
+                </span>
+              </div>
+
+              {!promotion.is_automatic && !isCheckout && (
+                <button
+                  className="text-gray-400 hover:text-red-500"
+                  onClick={() => {
+                    if (!promotion.code) {
+                      return
+                    }
+                    removePromotionCode(promotion.code)
+                  }}
+                  data-testid="remove-discount-button"
+                >
+                  <Trash size={12} />
+                  <span className="sr-only">Verwijder promotiecode</span>
+                </button>
+              )}
             </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

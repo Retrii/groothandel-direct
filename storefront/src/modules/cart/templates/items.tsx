@@ -30,22 +30,27 @@ const ItemsTemplate = ({
     isPendingAdminApproval || isPendingSalesManagerApproval
 
   return (
-    <div className="w-full flex flex-col gap-y-2">
-      <div className="flex flex-col gap-y-2 w-full">
+    <div className="w-full">
+      <div className="space-y-4">
         {items &&
           items.map((item: StoreCartLineItem) => {
             return (
-              <ItemFull
-                disabled={isPendingApproval}
-                currencyCode={cart?.currency_code}
-                showBorders={showBorders}
+              <div
                 key={item.id}
-                item={
-                  item as StoreCartLineItem & {
-                    metadata?: { note?: string }
+                className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0"
+              >
+                <ItemFull
+                  disabled={isPendingApproval}
+                  currencyCode={cart?.currency_code}
+                  showBorders={false}
+                  key={item.id}
+                  item={
+                    item as StoreCartLineItem & {
+                      metadata?: { note?: string }
+                    }
                   }
-                }
-              />
+                />
+              </div>
             )
           })}
       </div>

@@ -3,11 +3,11 @@
 import { sdk } from "@/lib/config"
 import medusaError from "@/lib/util/medusa-error"
 import { StoreApprovalResponse } from "@/types/approval"
+import { B2BCart } from "@/types/global"
 import { HttpTypes } from "@medusajs/types"
 import { track } from "@vercel/analytics/server"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
-import { B2BCart } from "@/types/global"
 import {
   getAuthHeaders,
   getCacheOptions,
@@ -457,6 +457,7 @@ export async function setContactDetails(
     const data = {
       email: formData.get("email") as string,
       metadata: {
+        phone: formData.get("phone"),
         invoice_recipient: formData.get("invoice_recipient"),
         cost_center: formData.get("cost_center"),
         requisition_number: formData.get("requisition_number"),

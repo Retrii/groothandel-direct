@@ -13,11 +13,11 @@ const ItemUnitPrice = ({ item, style = "default" }: ItemUnitPriceProps) => {
       {hasReducedPrice && (
         <p>
           {style === "default" && (
-            <span className="text-ui-fg-muted">Original: </span>
+            <span className="text-ui-fg-muted">Origineel: </span>
           )}
           <span
             className="line-through"
-            data-testid="product-unit-original-price"
+            data-testid="artikel-unit-original-price"
           >
             {item.compare_at_unit_price}
           </span>
@@ -27,7 +27,7 @@ const ItemUnitPrice = ({ item, style = "default" }: ItemUnitPriceProps) => {
         className={clx("text-base-regular", {
           "text-ui-fg-interactive": hasReducedPrice,
         })}
-        data-testid="product-unit-price"
+        data-testid="artikel-unit-price"
       >
         {item.unit_price}
       </span>

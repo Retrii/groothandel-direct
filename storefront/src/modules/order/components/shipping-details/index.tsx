@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
+import { Text } from "@medusajs/ui"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -11,13 +11,12 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
   }
 
   return (
-    <div className="p-6">
-      <Heading level="h3" className="mb-4 flex items-center gap-2">
-        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+    <div>
+      <h3 className="text-base font-semibold text-gray-900 mb-3">
         Verzendadres
-      </Heading>
+      </h3>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-1 text-sm">
         {order.shipping_address?.company && (
           <Text className="font-medium text-gray-900 capitalize">
             {order.shipping_address.company}

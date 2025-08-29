@@ -1,19 +1,12 @@
-"use client"
-
 import { useCart } from "@/lib/context/cart-context"
 import { getCheckoutStep } from "@/lib/util/get-checkout-step"
-import CartToCsvButton from "@/modules/cart/components/cart-to-csv-button"
 import CartTotals from "@/modules/cart/components/cart-totals"
 import PromotionCode from "@/modules/checkout/components/promotion-code"
 import Button from "@/modules/common/components/button"
-import Divider from "@/modules/common/components/divider"
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import { RequestQuoteConfirmation } from "@/modules/quotes/components/request-quote-confirmation"
-import { RequestQuotePrompt } from "@/modules/quotes/components/request-quote-prompt"
 import { B2BCustomer } from "@/types"
 import { ApprovalStatusType } from "@/types/approval"
 import { ExclamationCircle } from "@medusajs/icons"
-import { Container } from "@medusajs/ui"
 
 type SummaryProps = {
   customer: B2BCustomer | null
@@ -21,84 +14,60 @@ type SummaryProps = {
 }
 
 const Summary = ({ customer, spendLimitExceeded }: SummaryProps) => {
-  const { handleEmptyCart, cart } = useCart()
+  const { cart } = useCart()
 
-  if (!cart) return null
-
-  const checkoutStep = getCheckoutStep(cart)
-  const checkoutPath = checkoutStep
+  const checkoutStep = cart ? getCheckoutStep(cart) : undefined
+  const checkoutButtonLink = checkoutStep
     ? `/checkout?step=${checkoutStep}`
     : "/checkout"
-
-  const checkoutButtonLink = customer ? checkoutPath : "/account"
 
   const isPendingApproval = cart?.approvals?.some(
     (approval) => approval?.status === ApprovalStatusType.PENDING
   )
 
   return (
-    <Container className="flex flex-col gap-y-3">
-      <CartTotals />
-      <Divider />
+    <div className="space-y-4">
+      {/* Totals */}
+      <div>
+        <h3 className="text-base font-bold text-gray-900 mb-3">Overzicht</h3>
+        <CartTotals />
+      </div>
+
+      {/* Promotion Code */}
       <PromotionCode cart={cart} />
-      <Divider className="my-6" />
+
+      {/* Warning */}
       {spendLimitExceeded && (
-        <div className="flex items-center gap-x-2 bg-neutral-100 p-3 rounded-md shadow-borders-base">
-          <ExclamationCircle className="text-orange-500 w-fit overflow-visible" />
-          <p className="text-neutral-950 text-xs">
-            Deze bestelling overschrijdt uw bestedingslimiet.
-            <br />
-            Neem contact op met uw manager voor goedkeuring.
-          </p>
+        <div className="bg-amber-50 border border-amber-200 rounded p-3">
+          <div className="flex items-start gap-2">
+            <ExclamationCircle className="text-amber-600 w-4 h-4 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">
+                Bestedingslimiet overschreden
+              </p>
+              <p className="text-xs text-amber-700 mt-1">
+                Neem contact op met uw manager voor goedkeuring.
+              </p>
+            </div>
+          </div>
         </div>
       )}
-      <LocalizedClientLink
-        href={checkoutButtonLink}
-        data-testid="checkout-button"
-      >
-        <Button
-          className="w-full h-10 rounded-full shadow-none"
-          disabled={spendLimitExceeded}
+
+      {/* Checkout Button */}
+      <div className="pt-2">
+        <LocalizedClientLink
+          href={checkoutButtonLink}
+          data-testid="checkout-button"
         >
-          {customer
-            ? spendLimitExceeded
-              ? "Bestedingslimiet overschreden"
-              : "Afrekenen"
-            : "Log in om af te rekenen"}
-        </Button>
-      </LocalizedClientLink>
-      {!!customer && (
-        <RequestQuoteConfirmation>
           <Button
-            className="w-full h-10 rounded-full shadow-borders-base"
-            variant="secondary"
-            disabled={isPendingApproval}
+            className="w-full h-11 bg-blue-600 hover:bg-blue-700 font-medium"
+            disabled={spendLimitExceeded}
           >
-            Offerte aanvragen
+            {spendLimitExceeded ? "Bestedingslimiet overschreden" : "Afrekenen"}
           </Button>
-        </RequestQuoteConfirmation>
-      )}
-      {!customer && (
-        <RequestQuotePrompt>
-          <Button
-            className="w-full h-10 rounded-full shadow-borders-base"
-            variant="secondary"
-            disabled={isPendingApproval}
-          >
-            Offerte aanvragen
-          </Button>
-        </RequestQuotePrompt>
-      )}
-      <CartToCsvButton cart={cart} />
-      <Button
-        onClick={handleEmptyCart}
-        className="w-full h-10 rounded-full shadow-borders-base"
-        variant="secondary"
-        disabled={isPendingApproval}
-      >
-        Winkelwagen legen
-      </Button>
-    </Container>
+        </LocalizedClientLink>
+      </div>
+    </div>
   )
 }
 

@@ -22,7 +22,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
     <div className="p-6">
       <Heading level="h3" className="mb-4 flex items-center gap-2">
         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-        Orderoverzicht
+        Bestelling overzicht
       </Heading>
 
       <div className="space-y-3 text-sm">

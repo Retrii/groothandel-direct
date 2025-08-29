@@ -4,12 +4,8 @@ import { setShippingAddress } from "@/lib/data/cart"
 import ErrorMessage from "@/modules/checkout/components/error-message"
 import ShippingAddressForm from "@/modules/checkout/components/shipping-address-form"
 import { SubmitButton } from "@/modules/checkout/components/submit-button"
-import Divider from "@/modules/common/components/divider"
-import Spinner from "@/modules/common/icons/spinner"
 import { B2BCart, B2BCustomer } from "@/types"
 import { ApprovalStatusType } from "@/types/approval"
-import { CheckCircleSolid } from "@medusajs/icons"
-import { Container, Heading, Text } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
 
@@ -57,76 +53,71 @@ const ShippingAddress = ({
   }
 
   return (
-    <Container>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-row items-center justify-between w-full">
-          <Heading
-            level="h2"
-            className="flex flex-row text-xl gap-x-2 items-center"
-          >
-            Shipping Address
-            {!isOpen && <CheckCircleSolid />}
-          </Heading>
-
-          {!isOpen &&
-            cart?.shipping_address &&
-            cartApprovalStatus !== ApprovalStatusType.PENDING && (
-              <Text>
-                <button
-                  onClick={handleEdit}
-                  className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-                  data-testid="edit-address-button"
-                >
-                  Edit
-                </button>
-              </Text>
-            )}
+    <div className="px-6 py-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-lg font-medium text-gray-900">Verzendadres</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Waar moet uw bestelling naartoe?
+          </p>
         </div>
-        <Divider />
+
+        {!isOpen &&
+          cart?.shipping_address &&
+          cartApprovalStatus !== ApprovalStatusType.PENDING && (
+            <button
+              onClick={handleEdit}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              data-testid="edit-address-button"
+            >
+              Bewerken
+            </button>
+          )}
+      </div>
+
+      <div className="mt-4">
         {isOpen ? (
           <form action={handleSubmit}>
-            <div className="pb-8">
-              <ShippingAddressForm customer={customer} cart={cart} />
-              <div className="flex flex-col gap-y-2 items-end">
-                <SubmitButton
-                  className="mt-6"
-                  data-testid="submit-address-button"
-                >
-                  Next step
-                </SubmitButton>
-                <ErrorMessage
-                  error={error}
-                  data-testid="address-error-message"
-                />
-              </div>
+            <ShippingAddressForm customer={customer} cart={cart} />
+            <div className="mt-5">
+              <SubmitButton
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium"
+                data-testid="submit-address-button"
+              >
+                Volgende stap
+              </SubmitButton>
+              <ErrorMessage error={error} data-testid="address-error-message" />
             </div>
           </form>
         ) : (
           <div>
-            <div className="text-small-regular">
-              {cart && cart.shipping_address ? (
-                <div className="flex items-start gap-x-8">
-                  <div className="flex" data-testid="shipping-address-summary">
-                    <Text className="txt-medium text-ui-fg-subtle">
-                      {cart.shipping_address.first_name}{" "}
-                      {cart.shipping_address.last_name},{" "}
-                      {cart.shipping_address.address_1},{" "}
-                      {cart.shipping_address.postal_code},{" "}
-                      {cart.shipping_address.city},{" "}
-                      {cart.shipping_address.country_code?.toUpperCase()}
-                    </Text>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <Spinner />
-                </div>
-              )}
-            </div>
+            {cart && cart.shipping_address ? (
+              <div className="space-y-1" data-testid="shipping-address-summary">
+                <p className="text-sm font-medium text-gray-900">
+                  {cart.shipping_address.first_name}{" "}
+                  {cart.shipping_address.last_name}
+                </p>
+                <p className="text-sm text-gray-700">
+                  {cart.shipping_address.address_2}{" "}
+                  {cart.shipping_address.address_1}
+                </p>
+                <p className="text-sm text-gray-700">
+                  {cart.shipping_address.postal_code},{" "}
+                  {cart.shipping_address.city}
+                </p>
+                <p className="text-sm text-gray-700">
+                  {cart.shipping_address.country_code?.toUpperCase()}
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-8">
+                <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
           </div>
         )}
       </div>
-    </Container>
+    </div>
   )
 }
 

@@ -19,13 +19,13 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   const breadcrumbItems = [
     { label: "Account", href: "/account" },
     { label: "Bestellingen", href: "/account/orders" },
-    { label: `Order #${order.display_id}`, href: "#" },
+    { label: `Bestelling #${order.display_id}`, href: "#" },
   ]
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title={`Order #${order.display_id}`}
+        title={`Bestelling #${order.display_id}`}
         description="Bekijk de details van je bestelling"
       />
 
@@ -37,7 +37,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
             <div className="p-6 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                Producten
+                Artikelen
               </h2>
             </div>
             <div className="p-6">

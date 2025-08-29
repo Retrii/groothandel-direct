@@ -1,27 +1,24 @@
 "use client"
 
 import CompanyForm from "@/modules/checkout/components/company-form"
-import Divider from "@/modules/common/components/divider"
 import { B2BCart } from "@/types"
-import { Container, Heading } from "@medusajs/ui"
 
 const Company = ({ cart }: { cart: B2BCart }) => {
   return (
-    <Container>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-row items-center justify-between w-full">
-          <Heading level="h2" className="text-xl">
-            Company
-          </Heading>
-        </div>
-        <Divider />
-        <div className="flex flex-col gap-y-2">
-          <form>
-            <CompanyForm cart={cart} />
-          </form>
-        </div>
+    <div className="p-6">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">
+          Bedrijfsgegevens
+        </h2>
+        <p className="text-sm text-gray-600">
+          Uw bedrijfsinformatie voor deze bestelling
+        </p>
       </div>
-    </Container>
+
+      <form>
+        <CompanyForm cart={cart} />
+      </form>
+    </div>
   )
 }
 

@@ -194,7 +194,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
       {/* Brand Section */}
       {hasBrand && (
         <div className="border-t border-gray-200 pt-8">
-          <div className="border-b border-gray-200 pb-3 mb-6">
+          {/* <div className="border-b border-gray-200 pb-3 mb-6">
             <h2 className="text-lg md:text-xl font-semibold text-gray-900 flex items-center gap-2">
               <svg
                 className="w-5 h-5 text-sky-400"
@@ -211,7 +211,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
               </svg>
               {product.collection.title}
             </h2>
-          </div>
+          </div> */}
 
           <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-lg p-6">
             <div className="flex flex-col items-center text-center space-y-4">

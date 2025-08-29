@@ -1,6 +1,8 @@
 import { clx, Button as MedusaButton } from "@medusajs/ui"
 
-type ButtonProps = React.ComponentProps<typeof MedusaButton>
+type ButtonProps = React.ComponentProps<typeof MedusaButton> & {
+  variant?: "primary" | "secondary" | "transparent" | "danger" | "white"
+}
 
 const Button = ({
   children,
@@ -16,6 +18,8 @@ const Button = ({
       variant === "primary" && !props.disabled,
     "bg-transparent text-neutral-900 hover:bg-gray-50":
       variant === "transparent",
+    "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50":
+      (variant as string) === "white",
   })
 
   return (

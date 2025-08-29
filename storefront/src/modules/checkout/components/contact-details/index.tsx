@@ -1,10 +1,7 @@
 "use client"
 
 import { setContactDetails } from "@/lib/data/cart"
-import Divider from "@/modules/common/components/divider"
 import { ApprovalStatusType, B2BCart, B2BCustomer } from "@/types"
-import { CheckCircleSolid } from "@medusajs/icons"
-import { clx, Container, Heading, Text } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useActionState, useCallback } from "react"
 import ContactDetailsForm from "../contact-details-form"
@@ -73,85 +70,78 @@ const ContactDetails = ({
   }
 
   return (
-    <Container>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-row items-center justify-between w-full">
-          <Heading
-            level="h2"
-            className={clx(
-              "flex flex-row text-xl gap-x-2 items-center font-medium",
-              {
-                "opacity-50 pointer-events-none select-none":
-                  !isOpen && !isCompleted,
-              }
-            )}
-          >
-            Contact Details
-            {!isOpen && isCompleted && <CheckCircleSolid />}
-          </Heading>
-
-          {!isOpen &&
-            isCompleted &&
-            cartApprovalStatus !== ApprovalStatusType.PENDING && (
-              <Text>
-                <button
-                  onClick={handleEdit}
-                  className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-                  data-testid="edit-contact-details-button"
-                >
-                  Edit
-                </button>
-              </Text>
-            )}
+    <div className="px-6 py-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-lg font-medium text-gray-900">Contactgegevens</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Hoe kunnen we u bereiken?
+          </p>
         </div>
-        {(isOpen || isCompleted) && <Divider />}
+
+        {!isOpen &&
+          isCompleted &&
+          cartApprovalStatus !== ApprovalStatusType.PENDING && (
+            <button
+              onClick={handleEdit}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              data-testid="edit-contact-details-button"
+            >
+              Bewerken
+            </button>
+          )}
+      </div>
+
+      <div className="mt-4">
         {isOpen ? (
           <form action={handleSubmit}>
-            <div className="pb-8">
-              <ContactDetailsForm customer={customer} cart={cart} />
-              <div className="flex flex-col gap-y-2 items-end">
-                <SubmitButton
-                  className="mt-6"
-                  data-testid="submit-address-button"
-                >
-                  {requiresApproval &&
-                  cartApprovalStatus !== ApprovalStatusType.APPROVED &&
-                  !customerIsAdmin
-                    ? "Review order"
-                    : "Next step"}
-                </SubmitButton>
-                <ErrorMessage
-                  error={message}
-                  data-testid="address-error-message"
-                />
-              </div>
+            <ContactDetailsForm customer={customer} cart={cart} />
+            <div className="mt-5">
+              <SubmitButton
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium"
+                data-testid="submit-address-button"
+              >
+                {requiresApproval &&
+                cartApprovalStatus !== ApprovalStatusType.APPROVED &&
+                !customerIsAdmin
+                  ? "Bestelling controleren"
+                  : "Volgende stap"}
+              </SubmitButton>
+              <ErrorMessage
+                error={message}
+                data-testid="address-error-message"
+              />
             </div>
           </form>
         ) : (
           cart &&
           isCompleted && (
-            <div className="text-small-regular">
-              <div
-                className="flex flex-col w-full gap-y-2"
-                data-testid="contact-details-summary"
-              >
-                <Text className="txt-medium text-ui-fg-subtle">
-                  {cart.email}
-                </Text>
-                {cart.metadata?.notes ? (
-                  <div>
-                    <Divider />
-                    <Text className="txt-medium text-ui-fg-subtle pt-2">
-                      Note: {cart.metadata?.notes as string}
-                    </Text>
-                  </div>
-                ) : null}
+            <div className="space-y-3" data-testid="contact-details-summary">
+              <div>
+                <p className="text-sm font-medium text-gray-700">E-mailadres</p>
+                <p className="text-sm text-gray-900">{cart.email}</p>
               </div>
+              {(cart.metadata?.phone || customer?.phone) && (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Telefoon</p>
+                  <p className="text-sm text-gray-900">
+                    {cart.metadata?.phone?.toString() || customer?.phone}
+                  </p>
+                </div>
+              )}
+              {cart.metadata?.notes && (
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Opmerking</p>
+                  <p className="text-sm text-gray-900">
+                    {String(cart.metadata.notes)}
+                  </p>
+                </div>
+              )}
             </div>
           )
         )}
       </div>
-    </Container>
+    </div>
   )
 }
 
